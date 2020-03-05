@@ -6,8 +6,8 @@ SFML_FLAGS := -lsfml-graphics -lsfml-window -lsfml-system
 SRCS := $(wildcard *.cpp)
 OBJS := $(patsubst %.cpp, $(BUILD_DIR)/%.o, $(SRCS))
 
-my_game: $(OBJS)
-	g++ -o $(BUILD_DIR)/my_game $(OBJS) $(SFML_FLAGS) 
+simple_platformer: $(OBJS)
+	g++ -o $(BUILD_DIR)/simple_platformer $(OBJS) $(SFML_FLAGS) 
 
 $(BUILD_DIR)/%.o: %.cpp
 	g++ -o $@ -c $< $(CXXFLAGS)
@@ -15,5 +15,5 @@ $(BUILD_DIR)/%.o: %.cpp
 clean:
 	rm -f $(BUILD_DIR)/*
 
-run: my_game
-	$(BUILD_DIR)/my_game
+run: simple_platformer
+	$(BUILD_DIR)/simple_platformer
