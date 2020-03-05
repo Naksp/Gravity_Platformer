@@ -1,0 +1,123 @@
+#ifndef PLAYER_H
+#define PLAYER_H
+
+#include <boost/shared_ptr.hpp>
+
+#include "animatedSprite.hpp"
+#include "map.hpp"
+#include "mapRect.hpp"
+
+class Player
+{
+    public:
+        // Constructor
+        Player(float x, float y, Graphics &graphics);
+
+        // Destructor
+        ~Player();
+
+        // Update player
+        void update(sf::Time time, Map map);
+
+        // Movement functions
+        void startMovingRight();
+        void startMovingLeft();
+        void stopMoving();
+
+        void startJump();
+        void stopJump();
+
+        // Set position of Player
+        void setPosition(float x, float y);
+        void setPosition(sf::Vector2f &vec);
+
+        void draw(Graphics &graphics);
+
+    private:
+        /**
+         * Update X direction of movement vectors
+         * 
+         * @param time  Time of last frame
+         * @param map   Map of sprites
+         */
+        void updateX(sf::Time time, Map map);
+
+        /**
+         * Update Y direction of movement vectors
+         * 
+         * @param time  Time of last frame
+         * @param map   Map of sprites
+         */
+        void updateY(sf::Time time, Map map);
+
+
+    // Private variables
+    private:
+        sf::Texture texture;
+
+        // Player state
+        enum Motion {STANDING, WALKING, JUMPING, FALLING};
+        enum Facing {LEFT, RIGHT};
+
+        // State struct for defining movement
+        struct SpriteState
+        {
+            SpriteState(Motion motion=STANDING, Facing facing=RIGHT) :
+                motion(motion),
+                facing(facing) {}
+
+            Motion motion;
+            Facing facing;
+        };
+        friend bool operator<(const SpriteState& a, const SpriteState& b);
+
+        // Jump Class
+        struct Jump
+        {
+            public:
+                Jump() : time_remaining(0), jump_active(false) {}
+
+                void update(int elaplsed_time);
+                void reset();
+
+                void reactivate() { jump_active = time_remaining > 0; };
+                void deactivate() { jump_active = false; };
+                bool active() const { return jump_active; };
+
+            private:
+                int time_remaining;
+                bool jump_active;
+        };
+        
+        // Jump object
+        Jump jump;
+        Motion motion;
+
+        // Initialize sprite map
+        void initSprites(Graphics &graphics);
+
+        // Get currest SpriteState
+        SpriteState getSpriteState();
+
+        // Collision functions
+        MapRect leftCollision(int delta) const;
+        MapRect rightCollision(int delta) const;
+        MapRect topCollision(int delta) const;
+        MapRect bottomCollision(int delta) const;
+
+        bool onGround() const { return on_ground; }
+
+        // Current facing
+        Facing facing;
+
+        // Movement vectors
+        sf::Vector2f *position;
+        sf::Vector2f *velocity;
+        sf::Vector2f *acceleration;
+        bool on_ground;
+
+        // Sprite map
+        std::map<SpriteState, boost::shared_ptr<AnimatedSprite> > sprites;
+};
+
+#endif
