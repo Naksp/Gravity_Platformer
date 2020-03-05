@@ -46,7 +46,7 @@ Map* Map::createTestMap(Graphics &graphics)
 std::vector<Map::CollisionTile> Map::getCollidingTiles(const MapRect &rect) const
 {
     const int first_row = rect.top() / Game::tile_size;
-    const int last_row = (rect.bottom() / Game::tile_size) >= num_rows ? num_rows-1 : (rect.bottom() / Game::tile_size);
+    const int last_row = (rect.bottom() / Game::tile_size) >= num_rows ? num_rows-1 : (rect.bottom() / Game::tile_size); // TODO Maybe find a more elegant solution to this
     const int first_col = rect.left() / Game::tile_size;
     const int last_col = rect.right() / Game::tile_size;
 
