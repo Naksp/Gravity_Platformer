@@ -4,7 +4,7 @@
 
 MapRect::MapRect(int left, int right, int width, int height)
 {
-    sf::IntRect int_rect(left, right, width, height);
+    int_rect = new sf::IntRect(left, right, width, height);
 
 }
 
