@@ -30,7 +30,8 @@ AnimatedSprite::AnimatedSprite(const std::string &file_path, int fps, int num_fr
 
     // Set sprite offset
     x_offset = 0;
-    y_offset = -1 * (texture.getSize().y * sprite_scale_factor);
+    //y_offset = -1 * (texture.getSize().y * sprite_scale_factor);
+    y_offset = 0;
     sprite.move(0.f, y_offset);
 }
 

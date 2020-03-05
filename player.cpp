@@ -238,7 +238,7 @@ MapRect Player::bottomCollision(int delta) const
 {
     assert(delta >= 0);
     return MapRect(position->x + collision_y.left(),
-                   position->y + collision_y.top() + (collision_y.height() / 2),
+                   position->y + collision_y.top() + collision_y.height() / 2,
                    collision_y.width(),
                    collision_y.height() / 2 + delta);
 }
@@ -289,7 +289,7 @@ void Player::updateY(sf::Time time, Map map)
         // React to collision
         if (data.collided)
         {
-            position->y = data.row * Game::tile_size;
+            position->y = data.row * Game::tile_size - collision_y.bottom();
             velocity->y = 0;
             on_ground = true;
         }

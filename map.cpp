@@ -9,12 +9,16 @@
 using boost::shared_ptr;
 using std::vector;
 
+namespace
+{
+    const int num_rows = 15;
+    const int num_cols = 20;
+}
+
 Map* Map::createTestMap(Graphics &graphics)
 {
     Map *map = new Map();
 
-    const int num_rows = 15;
-    const int num_cols = 20;
     map->tiles = vector<vector<Tile> >(
         num_rows, vector<Tile>(
             num_cols, Tile()));
@@ -34,6 +38,7 @@ Map* Map::createTestMap(Graphics &graphics)
     map->tiles[11][9] = tile;
     map->tiles[8][7] = tile;
     map->tiles[8][6] = tile;
+    map->tiles[13][8] = tile;
 
     return map;
 }
@@ -41,7 +46,7 @@ Map* Map::createTestMap(Graphics &graphics)
 std::vector<Map::CollisionTile> Map::getCollidingTiles(const MapRect &rect) const
 {
     const int first_row = rect.top() / Game::tile_size;
-    const int last_row = rect.bottom() / Game::tile_size;
+    const int last_row = (rect.bottom() / Game::tile_size) >= num_rows ? num_rows-1 : (rect.bottom() / Game::tile_size);
     const int first_col = rect.left() / Game::tile_size;
     const int last_col = rect.right() / Game::tile_size;
 
@@ -53,11 +58,10 @@ std::vector<Map::CollisionTile> Map::getCollidingTiles(const MapRect &rect) cons
     std::cout << "First row: " << first_row << "\tLast row: " << last_row << std::endl;
 
     std::vector<CollisionTile> collision_tiles;
-    for (int row = first_row; row < last_row; row++)
+    for (int row = first_row; row <= last_row; row++)
     {
         for (int col = first_col; col <= last_col; col++)
         {
-            //std::cout << row << ", " << col << std::endl;
             collision_tiles.push_back(CollisionTile(row, col, tiles[row][col].tile_type));
         }
     }
