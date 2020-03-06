@@ -55,7 +55,8 @@ std::vector<Map::CollisionTile> Map::getCollidingTiles(const MapRect &rect) cons
                              rect.right()  << ", " << 
                              rect.bottom() << std::endl;
 
-    std::cout << "First row: " << first_row << "\tLast row: " << last_row << std::endl;
+    //std::cout << "First row: " << first_row << "\tLast row: " << last_row << std::endl;
+    std::cout << "First col: " << first_col << "\tLast col: " << last_col << std::endl;
 
     std::vector<CollisionTile> collision_tiles;
     for (int row = first_row; row <= last_row; row++)

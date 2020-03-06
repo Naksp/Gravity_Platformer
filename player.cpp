@@ -243,7 +243,78 @@ MapRect Player::bottomCollision(int delta) const
                    collision_y.height() / 2 + delta);
 }
 
+void Player::updateX(sf::Time time, Map map)
+{
+    //position->x += round(velocity->x * time.asMilliseconds());
 
+    // Update velocity
+    velocity->x += acceleration->x * time.asMilliseconds();
+
+    // Set x velocity cap
+    if (acceleration->x < 0.0f)
+    {
+        velocity->x = std::max(velocity->x, -maxSpeedX);
+    }
+    else if (acceleration->x > 0.0f)
+    {
+        velocity->x = std::min(velocity->x, maxSpeedX);
+    }
+    else
+    {
+        // Slow x velocity
+        velocity->x *= slowDownFactor;
+    }
+
+    const int delta = (int) round(velocity->x * time.asMilliseconds());
+    std::cout << "Delta x: " << delta << std::endl;
+
+    if (delta > 0)
+    {
+        CollisionData data = setWallCollisionData(map, rightCollision(delta));
+
+        if (data.collided)
+        {
+            position->x = data.col * Game::tile_size - collision_x.width();
+            velocity->x = 0;
+        }
+        else
+        {
+            position->x += delta;
+        }
+
+        /*
+        data = setWallCollisionData(map, leftCollision(0));
+        if (data.collided)
+        {
+            position->x = data.col * Game::tile_size + collision_x.width();    
+        }
+        */
+    }
+    /*
+    else
+    {
+        CollisionData data = setWallCollisionData(map, leftCollision(delta));
+
+        if (data.collided)
+        {
+            position->x = data.col * Game::tile_size + collision_x.width();
+            velocity->x = 0;
+        }
+        else
+        {
+            position->x += delta;
+        }
+        
+        data = setWallCollisionData(map, rightCollision(0));
+
+        if (data.collided)
+        {
+            position->x = data.col * Game::tile_size - collision_x.right();
+        }
+    }
+    */
+}
+/*
 void Player::updateX(sf::Time time, Map map)
 {
     position->x += round(velocity->x * time.asMilliseconds());
@@ -267,6 +338,7 @@ void Player::updateX(sf::Time time, Map map)
     }
 
 }
+*/
 
 void Player::updateY(sf::Time time, Map map)
 {
@@ -279,7 +351,7 @@ void Player::updateY(sf::Time time, Map map)
 
     // Calculate delta Y
     const int delta = (int) round(velocity->y * time.asMilliseconds());
-    std::cout << "delta: "  << delta << std::endl;
+    //std::cout << "delta: "  << delta << std::endl;
 
     if (delta > 0)
     {
