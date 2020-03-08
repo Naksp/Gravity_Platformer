@@ -6,7 +6,7 @@
 struct MapRect : public sf::IntRect
 {
     public:
-        MapRect(int left, int right, int width, int height);
+        MapRect(int left, int top, int width, int height);
         ~MapRect();
 
         int left() const;
@@ -16,6 +16,8 @@ struct MapRect : public sf::IntRect
 
         int width() const;
         int height() const;
+
+        sf::RectangleShape toRectangle(sf::Color outlineColor) const;
 
     private:
         const sf::IntRect *int_rect;

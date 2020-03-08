@@ -16,6 +16,9 @@ struct Game
         ~Game();
 
     private:
+        void initPlayer();
+        void initPlayer(int x_pos, int y_pos);
+
         // Handle input
         void processInput(Input input);
 

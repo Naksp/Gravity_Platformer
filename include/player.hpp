@@ -27,11 +27,15 @@ class Player
         void startJump();
         void stopJump();
 
+        void setSpawn(sf::Vector2f &spawn);
+        void respawn();
+
         // Set position of Player
         void setPosition(float x, float y);
         void setPosition(sf::Vector2f &vec);
 
         void draw(Graphics &graphics);
+        void drawCollision(Graphics &graphics);
 
     private:
         /**
@@ -53,6 +57,8 @@ class Player
 
     // Private variables
     private:
+        sf::Vector2f *spawn_point;
+        // Player Texture
         sf::Texture texture;
 
         // Player state
@@ -101,6 +107,7 @@ class Player
 
         // Collision functions
         MapRect leftCollision(int delta) const;
+        MapRect leftCollision2(int delta) const;
         MapRect rightCollision(int delta) const;
         MapRect topCollision(int delta) const;
         MapRect bottomCollision(int delta) const;

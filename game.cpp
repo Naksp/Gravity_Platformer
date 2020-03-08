@@ -15,7 +15,7 @@ Game::Game()
     graphics = new Graphics(1280, 960, 60, "Test 3");
 
     // Set up Player
-    player = new Player(0, graphics->view->getSize().y - 16, *graphics);
+    initPlayer();
 
     // Start Event Loop
     eventLoop();
@@ -27,6 +27,16 @@ Game::~Game()
     delete graphics;
     delete player;
     delete map;
+}
+
+void Game::initPlayer()
+{
+    player = new Player(0, graphics->view->getSize().y - 16, *graphics);
+}
+
+void Game::initPlayer(int x_pos, int y_pos)
+{
+    player = new Player(x_pos, y_pos, *graphics);
 }
 
 // Process keyboard input and move player
@@ -75,6 +85,7 @@ void Game::draw()
     graphics->clear();
     map->draw(*graphics);
     player->draw(*graphics);
+    //player->drawCollision(*graphics);
     graphics->display();
 }
 
@@ -106,6 +117,10 @@ void Game::eventLoop()
                     if (input.wasKeyPressed(sf::Keyboard::Escape))
                     {
                         graphics->window->close();
+                    }
+                    if (input.wasKeyPressed(sf::Keyboard::R))
+                    {
+                        player->respawn();
                     }
                     break;
 

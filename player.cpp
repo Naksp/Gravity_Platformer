@@ -19,16 +19,14 @@ namespace
     const float max_fall_speed = 0.6f;
 
     // Jump constants
-    const float jump_speed = 0.3f;
+    const float jump_speed = 0.28f;
     const float jump_time = 200;
     const int jump_frame = 5;
     const int fall_frame = 1;
 
     // Collision constants
-    //const sf::IntRect collision_x(6, 4, 7, 6);
-    //const sf::IntRect collision_y(2, 0, 4, 16);
-    const MapRect collision_x(6, 4, 7, 6);
-    const MapRect collision_y(2, 0, 4, 16);
+    const MapRect collision_x(0, 4, 16, 8);
+    const MapRect collision_y(4, 0, 8, 16);
 
     struct CollisionData
     {
@@ -73,6 +71,10 @@ Player::Player(float x, float y, Graphics &graphics) :
 
     // Set initial sprite position
     sprites[getSpriteState()]->setPosition(*position);
+
+    // Set initial spawn point
+    spawn_point = new sf::Vector2f(x, y);
+    setSpawn(*spawn_point);
 }
 
 // Destructor
@@ -154,17 +156,30 @@ void Player::Jump::update(int elapsed_time)
     }
 }
 
+void Player::setSpawn(sf::Vector2f &spawn)
+{
+    spawn_point->x = spawn.x;
+    spawn_point->y = spawn.y;
+}
+
+void Player::respawn()
+{
+    setPosition(*spawn_point);
+}
+
 // Set player position
 void Player::setPosition(float x, float y)
 {
-    sprites[getSpriteState()]->setPosition(x, y);
+    position->x = x;
+    position->y = y;
 
 }
 
 // Set player postion (Vector2f)
 void Player::setPosition(sf::Vector2f &vec)
 {
-    sprites[getSpriteState()]->setPosition(vec);
+    position->x = vec.x;
+    position->y = vec.y;
 }
 
 void Player::draw(Graphics &graphics)
@@ -172,9 +187,38 @@ void Player::draw(Graphics &graphics)
     graphics.window->draw(*sprites[getSpriteState()]);
 }
 
+void Player::drawCollision(Graphics &graphics)
+{
+    sf::RectangleShape x_rectangle = collision_x.toRectangle(sf::Color::Blue);
+    sf::RectangleShape y_rectangle = collision_y.toRectangle(sf::Color::Green);
+
+    x_rectangle.setPosition(sf::Vector2f(position->x + collision_x.left(), position->y + collision_x.top()));
+    y_rectangle.setPosition(sf::Vector2f(position->x + collision_y.left(), position->y + collision_y.top()));
+
+    graphics.window->draw(x_rectangle);
+    graphics.window->draw(y_rectangle);
+}
+
 // Initialize Player sprites
 void Player::initSprites(Graphics &graphics)
 {
+    sprites[SpriteState(STANDING, RIGHT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/test_sprite.png", 15, 1, 3, 16, graphics));
+    sprites[SpriteState(STANDING, LEFT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/test_sprite.png", 15, 1, 3, 16, graphics));
+    //sprites[SpriteState(STANDING, LEFT)]->faceLeft(); 
+
+    sprites[SpriteState(WALKING, RIGHT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/test_sprite.png", 15, 1, 1, 16, graphics));
+    sprites[SpriteState(WALKING, LEFT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/test_sprite.png", 15, 1, 1, 16, graphics));
+    //sprites[SpriteState(WALKING, LEFT)]->faceLeft(); 
+
+    sprites[SpriteState(JUMPING, RIGHT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/test_sprite.png", 15, 1, 2, 16, graphics));
+    sprites[SpriteState(JUMPING, LEFT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/test_sprite.png", 15, 1, 2, 16, graphics));
+    //sprites[SpriteState(JUMPING, LEFT)]->faceLeft(); 
+
+    sprites[SpriteState(FALLING, RIGHT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/test_sprite.png", 15, 1, 2, 16, graphics));
+    sprites[SpriteState(FALLING, LEFT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/test_sprite.png", 15, 1, 2, 16, graphics));
+    //sprites[SpriteState(FALLING, LEFT)]->faceLeft(); 
+
+    /*
     sprites[SpriteState(STANDING, RIGHT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/santa.png", 15, 1, 0, 16, graphics));
     sprites[SpriteState(STANDING, LEFT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/santa.png", 15, 1, 0, 16, graphics));
     sprites[SpriteState(STANDING, LEFT)]->faceLeft(); 
@@ -190,6 +234,7 @@ void Player::initSprites(Graphics &graphics)
     sprites[SpriteState(FALLING, RIGHT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/santa.png", 15, 1, fall_frame, 16, graphics));
     sprites[SpriteState(FALLING, LEFT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/santa.png", 15, 1, fall_frame, 16, graphics));
     sprites[SpriteState(FALLING, LEFT)]->faceLeft(); 
+    */
 }
 
 // Get current Sprite State
@@ -218,7 +263,7 @@ MapRect Player::leftCollision(int delta) const{
 MapRect Player::rightCollision(int delta) const
 {
     assert(delta >= 0);
-    return MapRect(position->x + collision_x.left() / 2,
+    return MapRect(position->x + collision_x.left() + collision_x.width() / 2,
                    position->y + collision_x.top(),
                    collision_x.width() / 2 + delta,
                    collision_x.height());
@@ -245,8 +290,6 @@ MapRect Player::bottomCollision(int delta) const
 
 void Player::updateX(sf::Time time, Map map)
 {
-    //position->x += round(velocity->x * time.asMilliseconds());
-
     // Update velocity
     velocity->x += acceleration->x * time.asMilliseconds();
 
@@ -266,79 +309,58 @@ void Player::updateX(sf::Time time, Map map)
     }
 
     const int delta = (int) round(velocity->x * time.asMilliseconds());
-    std::cout << "Delta x: " << delta << std::endl;
 
+    // Player is moveing right
     if (delta > 0)
     {
+        // Check collision on right
         CollisionData data = setWallCollisionData(map, rightCollision(delta));
 
+        // Collision
         if (data.collided)
         {
             position->x = data.col * Game::tile_size - collision_x.width();
             velocity->x = 0;
         }
+        // No collision
         else
         {
             position->x += delta;
         }
 
-        /*
+        // Check on left
         data = setWallCollisionData(map, leftCollision(0));
         if (data.collided)
         {
-            position->x = data.col * Game::tile_size + collision_x.width();    
+            position->x = data.col * Game::tile_size + collision_x.width() + collision_x.left();    
         }
-        */
     }
-    /*
+    // Player is moving left
     else
     {
+        // Check collision on left
         CollisionData data = setWallCollisionData(map, leftCollision(delta));
 
+        // Collision
         if (data.collided)
         {
             position->x = data.col * Game::tile_size + collision_x.width();
             velocity->x = 0;
         }
+        // No collision
         else
         {
             position->x += delta;
         }
         
+        // Check on right
         data = setWallCollisionData(map, rightCollision(0));
-
         if (data.collided)
         {
             position->x = data.col * Game::tile_size - collision_x.right();
         }
     }
-    */
 }
-/*
-void Player::updateX(sf::Time time, Map map)
-{
-    position->x += round(velocity->x * time.asMilliseconds());
-
-    // Update velocity
-    velocity->x += acceleration->x * time.asMilliseconds();
-
-    // Set x velocity cap
-    if (acceleration->x < 0.0f)
-    {
-        velocity->x = std::max(velocity->x, -maxSpeedX);
-    }
-    else if (acceleration->x > 0.0f)
-    {
-        velocity->x = std::min(velocity->x, maxSpeedX);
-    }
-    else
-    {
-        // Slow x velocity
-        velocity->x *= slowDownFactor;
-    }
-
-}
-*/
 
 void Player::updateY(sf::Time time, Map map)
 {
@@ -351,35 +373,35 @@ void Player::updateY(sf::Time time, Map map)
 
     // Calculate delta Y
     const int delta = (int) round(velocity->y * time.asMilliseconds());
-    //std::cout << "delta: "  << delta << std::endl;
 
+    // Player is moving down
     if (delta > 0)
     {
         // Check collision on bottom
         CollisionData data = setWallCollisionData(map, bottomCollision(delta));
 
-        // React to collision
+        // Collision
         if (data.collided)
         {
             position->y = data.row * Game::tile_size - collision_y.bottom();
             velocity->y = 0;
             on_ground = true;
         }
+        // No collision
         else
         {
             position->y += delta;
             on_ground = false;
         }
 
-        // Check collision in up direction
+        // Check in up direction
         data = setWallCollisionData(map, topCollision(0));
-
         if (data.collided)
         {
-            std::cout << "*****" << std::endl;
             position->y = data.row * Game::tile_size + collision_y.height();
         }
     }
+    // Player is moving up
     else
     {
         CollisionData data = setWallCollisionData(map, topCollision(delta));
@@ -392,6 +414,12 @@ void Player::updateY(sf::Time time, Map map)
         else
         {
             position->y += delta;
+        }
+
+        data = setWallCollisionData(map, bottomCollision(0));
+        if (data.collided)
+        {
+            position->y = data.row * Game::tile_size - collision_y.bottom();
         }
         
     }

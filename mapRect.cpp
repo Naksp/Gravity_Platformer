@@ -1,10 +1,11 @@
 #include <SFML/Graphics/Rect.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
 
 #include "include/mapRect.hpp"
 
-MapRect::MapRect(int left, int right, int width, int height)
+MapRect::MapRect(int left, int top, int width, int height)
 {
-    int_rect = new sf::IntRect(left, right, width, height);
+    int_rect = new sf::IntRect(left, top, width, height);
 
 }
 
@@ -41,4 +42,15 @@ int MapRect::width() const
 int MapRect::height() const
 {
     return int_rect->height;
+}
+
+sf::RectangleShape MapRect::toRectangle(sf::Color outlineColor) const
+{
+    sf::RectangleShape rectangle;
+    rectangle.setSize(sf::Vector2f(int_rect->width, int_rect->height));
+    rectangle.setFillColor(sf::Color::Transparent);
+    rectangle.setOutlineThickness(1);
+    rectangle.setOutlineColor(outlineColor);
+
+    return rectangle;
 }
