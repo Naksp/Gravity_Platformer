@@ -10,7 +10,7 @@ namespace
 }
 
 // Constructor
-AnimatedSprite::AnimatedSprite(const std::string &file_path, int fps, int num_frames, int start_frame, int tile_size, Graphics &graphics) :
+AnimatedSprite::AnimatedSprite(const std::string &file_path, int fps, int num_frames, int start_frame, int row, int tile_size, Graphics &graphics) :
     tile_size(tile_size),
     frame_time(1000 / fps),
     num_frames(num_frames),
@@ -21,7 +21,7 @@ AnimatedSprite::AnimatedSprite(const std::string &file_path, int fps, int num_fr
     // Load texture
     texture = graphics.loatTexture(file_path);
 
-    int_rect = new sf::IntRect(start_frame * tile_size,0 , tile_size, tile_size);
+    int_rect = new sf::IntRect(start_frame * tile_size, row * tile_size, tile_size, tile_size);
 
     // Create sprite
     sprite.setTexture(texture);

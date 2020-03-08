@@ -18,7 +18,7 @@ class AnimatedSprite : public sf::Drawable
          * @param tile_size Size in pixels of each sprite on sprite sheet
          * @param graphics Graphics object containing AnimatedSprite
          */
-        AnimatedSprite(const std::string &file_path, int fps, int num_frames, int start_frame, int tile_size, Graphics &graphics);
+        AnimatedSprite(const std::string &file_path, int fps, int num_frames, int start_frame, int row, int tile_size, Graphics &graphics);
 
         // Destructor
         ~AnimatedSprite();

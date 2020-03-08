@@ -15,12 +15,12 @@ namespace
     const float maxSpeedX = 0.250f; // pixels / ms (original 0.325f)
 
     // Gravity constants
-    const float gravity = 0.003f;
+    const float gravity = 0.002f;
     const float max_fall_speed = 0.6f;
 
     // Jump constants
-    const float jump_speed = 0.28f;
-    const float jump_time = 200;
+    const float jump_speed = 0.22f;
+    const float jump_time = 300;
     const int jump_frame = 5;
     const int fall_frame = 1;
 
@@ -202,39 +202,17 @@ void Player::drawCollision(Graphics &graphics)
 // Initialize Player sprites
 void Player::initSprites(Graphics &graphics)
 {
-    sprites[SpriteState(STANDING, RIGHT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/test_sprite.png", 15, 1, 3, 16, graphics));
-    sprites[SpriteState(STANDING, LEFT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/test_sprite.png", 15, 1, 3, 16, graphics));
-    //sprites[SpriteState(STANDING, LEFT)]->faceLeft(); 
+    sprites[SpriteState(STANDING, RIGHT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/robo_ball.png", 3, 6, 0, 0, 16, graphics));
+    sprites[SpriteState(STANDING, LEFT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/robo_ball.png", 3, 6, 0, 0, 16, graphics));
 
-    sprites[SpriteState(WALKING, RIGHT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/test_sprite.png", 15, 1, 1, 16, graphics));
-    sprites[SpriteState(WALKING, LEFT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/test_sprite.png", 15, 1, 1, 16, graphics));
-    //sprites[SpriteState(WALKING, LEFT)]->faceLeft(); 
+    sprites[SpriteState(WALKING, RIGHT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/robo_ball.png", 3, 6, 0, 1, 16, graphics));
+    sprites[SpriteState(WALKING, LEFT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/robo_ball.png", 3, 6, 0, 2,16, graphics));
 
-    sprites[SpriteState(JUMPING, RIGHT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/test_sprite.png", 15, 1, 2, 16, graphics));
-    sprites[SpriteState(JUMPING, LEFT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/test_sprite.png", 15, 1, 2, 16, graphics));
-    //sprites[SpriteState(JUMPING, LEFT)]->faceLeft(); 
+    sprites[SpriteState(JUMPING, RIGHT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/robo_ball.png", 3, 6, 0, 4, 16, graphics));
+    sprites[SpriteState(JUMPING, LEFT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/robo_ball.png", 3, 6, 0, 5, 16, graphics));
 
-    sprites[SpriteState(FALLING, RIGHT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/test_sprite.png", 15, 1, 2, 16, graphics));
-    sprites[SpriteState(FALLING, LEFT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/test_sprite.png", 15, 1, 2, 16, graphics));
-    //sprites[SpriteState(FALLING, LEFT)]->faceLeft(); 
-
-    /*
-    sprites[SpriteState(STANDING, RIGHT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/santa.png", 15, 1, 0, 16, graphics));
-    sprites[SpriteState(STANDING, LEFT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/santa.png", 15, 1, 0, 16, graphics));
-    sprites[SpriteState(STANDING, LEFT)]->faceLeft(); 
-
-    sprites[SpriteState(WALKING, RIGHT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/santa.png", 15, 6, 0, 16, graphics));
-    sprites[SpriteState(WALKING, LEFT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/santa.png", 15, 6, 0, 16, graphics));
-    sprites[SpriteState(WALKING, LEFT)]->faceLeft(); 
-
-    sprites[SpriteState(JUMPING, RIGHT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/santa.png", 15, 1, jump_frame, 16, graphics));
-    sprites[SpriteState(JUMPING, LEFT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/santa.png", 15, 1, jump_frame, 16, graphics));
-    sprites[SpriteState(JUMPING, LEFT)]->faceLeft(); 
-
-    sprites[SpriteState(FALLING, RIGHT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/santa.png", 15, 1, fall_frame, 16, graphics));
-    sprites[SpriteState(FALLING, LEFT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/santa.png", 15, 1, fall_frame, 16, graphics));
-    sprites[SpriteState(FALLING, LEFT)]->faceLeft(); 
-    */
+    sprites[SpriteState(FALLING, RIGHT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/robo_ball.png", 3, 6, 0, 7, 16, graphics));
+    sprites[SpriteState(FALLING, LEFT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/robo_ball.png", 3, 6, 0, 8, 16, graphics));
 }
 
 // Get current Sprite State
@@ -252,6 +230,7 @@ Player::SpriteState Player::getSpriteState()
     return SpriteState(motion, facing);
 }
 
+// Get left collision rectangle
 MapRect Player::leftCollision(int delta) const{
     assert(delta <=0);
     return MapRect(position->x + collision_x.left() + delta,
@@ -260,6 +239,7 @@ MapRect Player::leftCollision(int delta) const{
                    collision_x.height());
 }
 
+// Get right collision rectangle
 MapRect Player::rightCollision(int delta) const
 {
     assert(delta >= 0);
@@ -269,6 +249,7 @@ MapRect Player::rightCollision(int delta) const
                    collision_x.height());
 }
 
+// Get top collision rectangle
 MapRect Player::topCollision(int delta) const
 {
     assert(delta <=0);
@@ -278,7 +259,7 @@ MapRect Player::topCollision(int delta) const
                    collision_y.height() / 2 - delta);
 }
 
-// Bottom of sprite, upper Y value
+// Get bottom collision rectangle
 MapRect Player::bottomCollision(int delta) const
 {
     assert(delta >= 0);

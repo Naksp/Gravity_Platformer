@@ -23,7 +23,7 @@ Map* Map::createTestMap(Graphics &graphics)
         num_rows, vector<Tile>(
             num_cols, Tile()));
 
-    map->texture = graphics.loatTexture("./resources/map_tile.png");
+    map->texture = graphics.loatTexture("./resources/metal_tile.png");
 
     shared_ptr<sf::Sprite> sprite(new sf::Sprite(map->texture));
     Tile tile(WALL_TILE, sprite);
