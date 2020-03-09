@@ -89,6 +89,7 @@ class Player
                 void reactivate() { jump_active = time_remaining > 0; };
                 void deactivate() { jump_active = false; };
                 bool active() const { return jump_active; };
+                void endJump() { time_remaining = 0; };
 
             private:
                 int time_remaining;

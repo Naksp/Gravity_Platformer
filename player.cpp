@@ -394,6 +394,7 @@ void Player::updateY(sf::Time time, Map map)
 
         if (data.collided)
         {
+            jump.endJump();
             position->y = data.row * Game::tile_size + collision_y.height();
             velocity->y = 0;
         }
