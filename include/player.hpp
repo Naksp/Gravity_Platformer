@@ -63,7 +63,7 @@ class Player
 
         // Player state
         enum Motion {STANDING, WALKING, JUMPING, FALLING};
-        enum Facing {LEFT, RIGHT};
+        enum Facing {LEFT, RIGHT, STILL};
 
         // State struct for defining movement
         struct SpriteState

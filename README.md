@@ -11,4 +11,4 @@ A simple platforming game made with C++ using [SFML](https://www.sfml-dev.org/).
 Run `make run` command in `Simple_Platformer` folder.
 
 ## Assets
-All assets used in Simple_Platformer are licensed under CC0 Public Domain.
+All assets used in Simple_Platformer were made by me for the purpose of this game.

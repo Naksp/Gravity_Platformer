@@ -74,9 +74,9 @@ void Game::processInput(Input input)
 void Game::update(sf::Time frameTime)
 {
     // TODO: Change this value back
-    sf::Time testTime = sf::milliseconds(16);
-    player->update(testTime, *map);
-    //player->update(frameTime, *map);
+    //sf::Time testTime = sf::milliseconds(16);
+    //player->update(testTime, *map);
+    player->update(frameTime, *map);
 }
 
 // Draw game objects
@@ -99,6 +99,7 @@ void Game::eventLoop()
     sf::Time frameTime;
 
     map = Map::createTestMap(*graphics); 
+    sf::sleep(sf::milliseconds(16));
 
     // Event Loop
     while (graphics->window->isOpen())

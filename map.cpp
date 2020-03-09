@@ -33,11 +33,12 @@ Map* Map::createTestMap(Graphics &graphics)
     {
         map->tiles[row][col] = tile;
     }
-    map->tiles[12][0] = tile;
-    map->tiles[11][8] = tile;
-    map->tiles[11][9] = tile;
     map->tiles[8][7] = tile;
     map->tiles[8][6] = tile;
+    map->tiles[11][8] = tile;
+    map->tiles[11][9] = tile;
+    map->tiles[11][4] = tile;
+    map->tiles[12][0] = tile;
     map->tiles[13][8] = tile;
 
     return map;
