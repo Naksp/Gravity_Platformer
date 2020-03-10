@@ -112,7 +112,7 @@ void Player::startMovingLeft()
 
 void Player::stopMoving()
 {
-    facing = STILL;
+    //facing = STILL;
     acceleration->x = 0.0f;
 }
 
@@ -204,20 +204,20 @@ void Player::drawCollision(Graphics &graphics)
 // Initialize Player sprites
 void Player::initSprites(Graphics &graphics)
 {
-    sprites[SpriteState(STANDING, RIGHT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/robo_ball.png", 3, 6, 0, 0, 16, graphics));
-    sprites[SpriteState(STANDING, LEFT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/robo_ball.png", 3, 6, 0, 0, 16, graphics));
-    sprites[SpriteState(STANDING, STILL)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/robo_ball.png", 3, 6, 0, 0, 16, graphics));
+    sprites[SpriteState(STANDING, RIGHT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/robo_ball.png", 3, 6, 0, 1, 16, graphics));
+    sprites[SpriteState(STANDING, LEFT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/robo_ball.png", 3, 6, 0, 2, 16, graphics));
+    //sprites[SpriteState(STANDING, STILL)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/robo_ball.png", 3, 6, 0, 0, 16, graphics));
 
     sprites[SpriteState(WALKING, RIGHT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/robo_ball.png", 3, 6, 0, 1, 16, graphics));
     sprites[SpriteState(WALKING, LEFT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/robo_ball.png", 3, 6, 0, 2,16, graphics));
 
     sprites[SpriteState(JUMPING, RIGHT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/robo_ball.png", 3, 6, 0, 4, 16, graphics));
     sprites[SpriteState(JUMPING, LEFT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/robo_ball.png", 3, 6, 0, 5, 16, graphics));
-    sprites[SpriteState(JUMPING, STILL)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/robo_ball.png", 3, 6, 0, 3, 16, graphics));
+    //sprites[SpriteState(JUMPING, STILL)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/robo_ball.png", 3, 6, 0, 3, 16, graphics));
 
     sprites[SpriteState(FALLING, RIGHT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/robo_ball.png", 3, 6, 0, 7, 16, graphics));
     sprites[SpriteState(FALLING, LEFT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/robo_ball.png", 3, 6, 0, 8, 16, graphics));
-    sprites[SpriteState(FALLING, STILL)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/robo_ball.png", 3, 6, 0, 6, 16, graphics));
+    //sprites[SpriteState(FALLING, STILL)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/robo_ball.png", 3, 6, 0, 6, 16, graphics));
 }
 
 // Get current Sprite State
@@ -401,6 +401,10 @@ void Player::updateY(sf::Time time, Map map)
         else
         {
             position->y += delta;
+            if (position->y < 0)
+            {
+                position->y = 0;
+            }
         }
 
         data = setWallCollisionData(map, bottomCollision(0));

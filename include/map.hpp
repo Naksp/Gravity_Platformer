@@ -25,6 +25,8 @@ class Map
         };
 
         static Map* createTestMap(Graphics &graphics);
+        
+        static Map* loadMapFile(const std::string file_path ,Graphics &graphics);
 
         //std::vector<CollisionTile> getCollidingTiles(const sf::IntRect &rect) const;
         std::vector<CollisionTile> getCollidingTiles(const MapRect &rect) const;
@@ -45,6 +47,7 @@ class Map
         };
         std::vector<std::vector<Tile> > tiles;
         sf::Texture texture;
+        std::vector<sf::Texture> textures;
 
 };
 

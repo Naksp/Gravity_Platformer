@@ -1,5 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <fstream>
+#include <sstream>
 
 #include "include/game.hpp"
 #include "include/graphics.hpp"
@@ -40,6 +42,57 @@ Map* Map::createTestMap(Graphics &graphics)
     map->tiles[11][4] = tile;
     map->tiles[12][0] = tile;
     map->tiles[13][8] = tile;
+
+    return map;
+}
+
+Map* Map::loadMapFile(const std::string file_path, Graphics &graphics)
+{
+    // Create new map
+    Map *map = new Map();
+    map->tiles = vector<vector<Tile> >(
+        num_rows, vector<Tile>(
+            num_cols, Tile()));
+
+    // TODO make this a function to load from file
+    /*
+    map->textures = vector<sf::Texture>();
+    map->textures[0] = graphics.loatTexture("./resources/metal_tile.png");
+    shared_ptr<sf::Sprite> sprite(new sf::Sprite(map->textures[0]));
+    */
+   map->texture = graphics.loatTexture("./resources/metal_tile.png");
+   shared_ptr<sf::Sprite> sprite(new sf::Sprite(map->texture));
+
+    Tile tile(WALL_TILE, sprite);
+
+    // Stream vars
+    std::ifstream map_file;
+    map_file.open(file_path);
+    std::string line;
+
+    int row = 0;
+    if (map_file.is_open())
+    {
+        std::cout << "Loading Map File..." << std::endl;
+        // Get next row
+        while (std::getline(map_file, line) && row < num_rows)
+        {
+            std::stringstream line_stream(line);
+
+            int col = 0;
+            int val;
+            // Get next col
+            while (line_stream >> val)
+            {
+                if (val == 1)
+                {
+                    map->tiles[row][col] = tile;
+                }
+                col++;
+            }
+            row++;
+        }
+    }
 
     return map;
 }

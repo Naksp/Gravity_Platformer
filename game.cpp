@@ -98,7 +98,8 @@ void Game::eventLoop()
     sf::Clock frameClock;
     sf::Time frameTime;
 
-    map = Map::createTestMap(*graphics); 
+    //map = Map::createTestMap(*graphics); 
+    map = Map::loadMapFile("./maps/test_map", *graphics);
     sf::sleep(sf::milliseconds(16));
 
     // Event Loop
