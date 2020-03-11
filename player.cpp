@@ -61,6 +61,7 @@ Player::Player(float x, float y, Graphics &graphics) :
     motion(STANDING),
     facing(FRONT),
     gravity(DOWN),
+    g_sign(1),
     on_ground(true)
 {
     // Initialize sprites
@@ -70,6 +71,9 @@ Player::Player(float x, float y, Graphics &graphics) :
     position = new sf::Vector2f(x, y);
     velocity = new sf::Vector2f(0.0f, 0.0f);
     acceleration = new sf::Vector2f(0.0f, 0.0f);
+
+    rel_x = &velocity->x;
+    rel_y = &velocity->y;
 
     // Set initial sprite position
     sprites[getSpriteState()]->setPosition(*position);
@@ -134,12 +138,18 @@ void Player::setGravityUp()
 {
     setRotation(180.f);
     gravity = UP;
+    rel_x = &velocity->x;
+    rel_y = &velocity->y;
+    g_sign = -1;
 }
 
 void Player::setGravityDown()
 {
     setRotation(0.f);
     gravity = DOWN;
+    rel_x = &velocity->x;
+    rel_y = &velocity->y;
+    g_sign = 1;
 }
 
 
@@ -151,7 +161,7 @@ void Player::startJump()
     {
         // Start jump
         jump.reset();
-        velocity->y = -jump_speed;
+        *rel_y = -jump_speed * g_sign;
         on_ground = false;
     }
     // Jump has started
@@ -384,17 +394,16 @@ void Player::updateX(sf::Time time, Map map)
 
 void Player::updateY(sf::Time time, Map map)
 {
-    int g_sign = (gravity == DOWN) ? 1 : -1;
 
     // If jump is expired, set fall velocity
     if (!jump.active())
     {
-        velocity->y = std::min(velocity->y + (g_sign * gravity_val * time.asMilliseconds()), max_fall_speed);
+        *rel_y = std::min(*rel_y + (g_sign * gravity_val * time.asMilliseconds()), max_fall_speed);
     }
 
     // Calculate delta Y
     //const int delta = (int) round(velocity->y * time.asMilliseconds());
-    const int delta = (int) round(velocity->y * time.asMilliseconds());
+    const int delta = (int) round(*rel_y * time.asMilliseconds());
 
     // Player is moving down
     if (delta > 0)
@@ -406,7 +415,7 @@ void Player::updateY(sf::Time time, Map map)
         if (data.collided)
         {
             position->y = data.row * Game::tile_size - collision_y.bottom();
-            velocity->y = 0;
+            *rel_y = 0;
             if (gravity == DOWN)
             {
                 on_ground = true;
@@ -436,9 +445,9 @@ void Player::updateY(sf::Time time, Map map)
 
         if (data.collided)
         {
-            jump.endJump();
+            //jump.endJump();
             position->y = data.row * Game::tile_size + collision_y.height();
-            velocity->y = 0;
+            *rel_y = 0;
             if (gravity == UP)
             {
                 on_ground = true;

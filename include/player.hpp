@@ -129,6 +129,9 @@ class Player
         Facing facing;
 
         Gravity gravity;
+        float *rel_x;
+        float *rel_y;
+        int g_sign;
 
         // Movement vectors
         sf::Vector2f *position;
