@@ -243,18 +243,15 @@ void Player::initSprites(Graphics &graphics)
 {
     sprites[SpriteState(STANDING, FRONT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/robo_ball.png", 3, 6, 0, 1, 16, graphics));
     sprites[SpriteState(STANDING, BACK)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/robo_ball.png", 3, 6, 0, 2, 16, graphics));
-    //sprites[SpriteState(STANDING, STILL)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/robo_ball.png", 3, 6, 0, 0, 16, graphics));
 
     sprites[SpriteState(WALKING, FRONT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/robo_ball.png", 3, 6, 0, 1, 16, graphics));
     sprites[SpriteState(WALKING, BACK)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/robo_ball.png", 3, 6, 0, 2,16, graphics));
 
     sprites[SpriteState(JUMPING, FRONT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/robo_ball.png", 3, 6, 0, 4, 16, graphics));
     sprites[SpriteState(JUMPING, BACK)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/robo_ball.png", 3, 6, 0, 5, 16, graphics));
-    //sprites[SpriteState(JUMPING, STILL)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/robo_ball.png", 3, 6, 0, 3, 16, graphics));
 
     sprites[SpriteState(FALLING, FRONT)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/robo_ball.png", 3, 6, 0, 7, 16, graphics));
     sprites[SpriteState(FALLING, BACK)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/robo_ball.png", 3, 6, 0, 8, 16, graphics));
-    //sprites[SpriteState(FALLING, STILL)] = boost::shared_ptr<AnimatedSprite>( new AnimatedSprite("./resources/robo_ball.png", 3, 6, 0, 6, 16, graphics));
 }
 
 // Get current Sprite State
@@ -387,14 +384,16 @@ void Player::updateX(sf::Time time, Map map)
 
 void Player::updateY(sf::Time time, Map map)
 {
+    int g_sign = (gravity == DOWN) ? 1 : -1;
 
     // If jump is expired, set fall velocity
     if (!jump.active())
     {
-        velocity->y = std::min(velocity->y + (gravity_val * time.asMilliseconds()), max_fall_speed);
+        velocity->y = std::min(velocity->y + (g_sign * gravity_val * time.asMilliseconds()), max_fall_speed);
     }
 
     // Calculate delta Y
+    //const int delta = (int) round(velocity->y * time.asMilliseconds());
     const int delta = (int) round(velocity->y * time.asMilliseconds());
 
     // Player is moving down
@@ -408,13 +407,19 @@ void Player::updateY(sf::Time time, Map map)
         {
             position->y = data.row * Game::tile_size - collision_y.bottom();
             velocity->y = 0;
-            on_ground = true;
+            if (gravity == DOWN)
+            {
+                on_ground = true;
+            }
         }
         // No collision
         else
         {
             position->y += delta;
-            on_ground = false;
+            if (gravity == DOWN)
+            {
+                on_ground = false;
+            }
         }
 
         // Check in up direction
@@ -434,6 +439,10 @@ void Player::updateY(sf::Time time, Map map)
             jump.endJump();
             position->y = data.row * Game::tile_size + collision_y.height();
             velocity->y = 0;
+            if (gravity == UP)
+            {
+                on_ground = true;
+            }
         }
         else
         {
@@ -441,6 +450,10 @@ void Player::updateY(sf::Time time, Map map)
             if (position->y < 0)
             {
                 position->y = 0;
+            }
+            if (gravity == UP)
+            {
+                on_ground = false;
             }
         }
 

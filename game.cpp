@@ -104,7 +104,7 @@ void Game::draw()
     graphics->clear();
     map->draw(*graphics);
     player->draw(*graphics);
-    player->drawCollision(*graphics);
+    //player->drawCollision(*graphics);
     graphics->display();
 }
 
@@ -117,7 +117,6 @@ void Game::eventLoop()
     sf::Clock frameClock;
     sf::Time frameTime;
 
-    //map = Map::createTestMap(*graphics); 
     map = Map::loadMapFile("./maps/test_map", *graphics);
     sf::sleep(sf::milliseconds(16));
 
