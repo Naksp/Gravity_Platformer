@@ -62,6 +62,8 @@ class Player
          */
         void updateY(sf::Time time, Map map);
 
+        void updateX2(sf::Time time, Map map);
+        void updateY2(sf::Time time, Map map);
 
     // Private variables
     private:
@@ -129,8 +131,10 @@ class Player
         Facing facing;
 
         Gravity gravity;
-        float *rel_x;
-        float *rel_y;
+        float *rel_vel_x;
+        float *rel_vel_y;
+        float *rel_pos_x;
+        float *rel_pos_y;
         int g_sign;
 
         // Movement vectors
