@@ -24,6 +24,12 @@ class Player
         void startMovingLeft();
         void stopMoving();
 
+        // Gravity change
+        void setGravityLeft();
+        void setGravityRight();
+        void setGravityUp();
+        void setGravityDown();
+
         void startJump();
         void stopJump();
 
@@ -33,6 +39,8 @@ class Player
         // Set position of Player
         void setPosition(float x, float y);
         void setPosition(sf::Vector2f &vec);
+
+        void setRotation(float angle);
 
         void draw(Graphics &graphics);
         void drawCollision(Graphics &graphics);
@@ -63,13 +71,14 @@ class Player
 
         // Player state
         enum Motion {STANDING, WALKING, JUMPING, FALLING};
-        enum Facing {LEFT, RIGHT};
+        enum Facing {BACK, FRONT};
+        enum Gravity {LEFT, RIGHT, UP, DOWN};
         //enum Facing {LEFT, RIGHT, STILL};
 
         // State struct for defining movement
         struct SpriteState
         {
-            SpriteState(Motion motion=STANDING, Facing facing=RIGHT) :
+            SpriteState(Motion motion=STANDING, Facing facing=FRONT) :
                 motion(motion),
                 facing(facing) {}
 
@@ -118,6 +127,8 @@ class Player
 
         // Current facing
         Facing facing;
+
+        Gravity gravity;
 
         // Movement vectors
         sf::Vector2f *position;

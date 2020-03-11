@@ -50,6 +50,8 @@ class AnimatedSprite : public sf::Drawable
          */
         void setPosition(sf::Vector2f &vec);
 
+        void setRotation(float angle);
+
     private:
         // Draw function
         virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;

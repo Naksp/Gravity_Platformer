@@ -31,7 +31,7 @@ Game::~Game()
 
 void Game::initPlayer()
 {
-    player = new Player(0, graphics->view->getSize().y - 16, *graphics);
+    player = new Player(tile_size, graphics->view->getSize().y - tile_size, *graphics);
 }
 
 void Game::initPlayer(int x_pos, int y_pos)
@@ -68,6 +68,25 @@ void Game::processInput(Input input)
     {
         player->stopJump();
     }
+
+    // Player Rotation
+    if (input.wasKeyPressed(sf::Keyboard::J))
+    {
+        player->setGravityLeft();
+    }
+    else if (input.wasKeyPressed(sf::Keyboard::K))
+    {
+        player->setGravityDown();
+    }
+    else if (input.wasKeyPressed(sf::Keyboard::L))
+    {
+        player->setGravityRight();
+    }
+    else if (input.wasKeyPressed(sf::Keyboard::I))
+    {
+        player->setGravityUp();
+    }
+
 }
 
 // Update game state
@@ -85,7 +104,7 @@ void Game::draw()
     graphics->clear();
     map->draw(*graphics);
     player->draw(*graphics);
-    //player->drawCollision(*graphics);
+    player->drawCollision(*graphics);
     graphics->display();
 }
 

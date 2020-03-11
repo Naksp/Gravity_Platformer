@@ -90,6 +90,13 @@ void AnimatedSprite::setPosition(sf::Vector2f &vec)
     sprite.move(x_offset, y_offset);
 }
 
+void AnimatedSprite::setRotation(float angle)
+{
+    sprite.setRotation(angle);
+    x_offset = (angle >= 90 && angle <= 180) ? tile_size * sprite_scale_factor : 0;
+    y_offset = (angle >= 180) ? tile_size * sprite_scale_factor : 0;
+}
+
 // Draw function
 void AnimatedSprite::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
