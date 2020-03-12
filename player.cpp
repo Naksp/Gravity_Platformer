@@ -72,8 +72,8 @@ Player::Player(float x, float y, Graphics &graphics) :
     velocity = new sf::Vector2f(0.0f, 0.0f);
     acceleration = new sf::Vector2f(0.0f, 0.0f);
 
-    rel_vel_x = &velocity->x;
-    rel_vel_y = &velocity->y;
+    //velocity->x = &velocity->x;
+    //velocity->y = &velocity->y;
     rel_pos_x = &position->x;
     rel_pos_y = &position->y;
 
@@ -98,8 +98,17 @@ void Player::update(sf::Time time, Map map)
     // Update jump duration
     jump.update(time.asMilliseconds());
 
-    updateX(time, map);
-    updateY(time, map);
+    if (gravity == UP || gravity == DOWN)
+    {
+        updateX(time, map);
+        updateY(time, map);
+    }
+    else
+    {
+        updateX2(time, map);
+        updateY2(time, map);
+    }
+    
 
     sprites[getSpriteState()]->update(time.asMilliseconds());
     sprites[getSpriteState()]->setPosition(*position);
@@ -128,10 +137,6 @@ void Player::setGravityLeft()
 {
     setRotation(90.f);
     gravity = LEFT;
-    rel_vel_x = &velocity->y;
-    rel_vel_y = &velocity->x;
-    rel_pos_x = &position->x;
-    rel_pos_y = &position->y;
     g_sign = -1;
 }
 
@@ -139,16 +144,13 @@ void Player::setGravityRight()
 {
     setRotation(270.f);
     gravity = RIGHT;
+    g_sign = 1;
 }
 
 void Player::setGravityUp()
 {
     setRotation(180.f);
     gravity = UP;
-    rel_vel_x = &velocity->x;
-    rel_vel_y = &velocity->y;
-    rel_pos_x = &position->x;
-    rel_pos_y = &position->y;
     g_sign = -1;
 }
 
@@ -156,10 +158,6 @@ void Player::setGravityDown()
 {
     setRotation(0.f);
     gravity = DOWN;
-    rel_vel_x = &velocity->x;
-    rel_vel_y = &velocity->y;
-    rel_pos_x = &position->x;
-    rel_pos_y = &position->y;
     g_sign = 1;
 }
 
@@ -172,7 +170,17 @@ void Player::startJump()
     {
         // Start jump
         jump.reset();
-        *rel_vel_y = -jump_speed * g_sign;
+        //*velocity->y = -jump_speed * g_sign;
+        if (gravity == DOWN || gravity == UP)
+        {
+            velocity->y = -jump_speed * g_sign;
+        }
+        else
+        {
+            velocity->x = -jump_speed * g_sign;
+        }
+
+        
         on_ground = false;
     }
     // Jump has started
@@ -332,24 +340,24 @@ MapRect Player::bottomCollision(int delta) const
 void Player::updateX(sf::Time time, Map map)
 {
     // Update velocity
-    *rel_vel_x += acceleration->x * time.asMilliseconds();
+    velocity->x += acceleration->x * time.asMilliseconds();
 
     // Set x velocity cap
     if (acceleration->x < 0.0f)
     {
-        *rel_vel_x = std::max(*rel_vel_x, -maxSpeedX);
+        velocity->x = std::max(velocity->x, -maxSpeedX);
     }
     else if (acceleration->x > 0.0f)
     {
-        *rel_vel_x = std::min(*rel_vel_x, maxSpeedX);
+        velocity->x = std::min(velocity->x, maxSpeedX);
     }
     else
     {
         // Slow x velocity
-        *rel_vel_x *= slowDownFactor;
+        velocity->x *= slowDownFactor;
     }
 
-    const int delta = (int) round(*rel_vel_x * time.asMilliseconds());
+    const int delta = (int) round(velocity->x * time.asMilliseconds());
 
     // Player is moveing right
     if (delta > 0)
@@ -360,20 +368,20 @@ void Player::updateX(sf::Time time, Map map)
         // Collision
         if (data.collided)
         {
-            *rel_pos_x = data.col * Game::tile_size - collision_x.width();
-            *rel_vel_x = 0;
+            position->x = data.col * Game::tile_size - collision_x.width();
+            velocity->x = 0;
         }
         // No collision
         else
         {
-            *rel_pos_x += delta;
+            position->x += delta;
         }
 
         // Check on left
         data = setWallCollisionData(map, leftCollision(0));
         if (data.collided)
         {
-            *rel_pos_x = data.col * Game::tile_size + collision_x.width() + collision_x.left();    
+            position->x = data.col * Game::tile_size + collision_x.width() + collision_x.left();    
         }
     }
     // Player is moving left
@@ -385,20 +393,20 @@ void Player::updateX(sf::Time time, Map map)
         // Collision
         if (data.collided)
         {
-            *rel_pos_x = data.col * Game::tile_size + collision_x.width();
-            *rel_vel_x = 0;
+            position->x = data.col * Game::tile_size + collision_x.width();
+            velocity->x = 0;
         }
         // No collision
         else
         {
-            *rel_pos_x += delta;
+            position->x += delta;
         }
         
         // Check on right
         data = setWallCollisionData(map, rightCollision(0));
         if (data.collided)
         {
-            *rel_pos_x = data.col * Game::tile_size - collision_x.right();
+            position->x = data.col * Game::tile_size - collision_x.right();
         }
     }
 }
@@ -409,12 +417,12 @@ void Player::updateY(sf::Time time, Map map)
     // If jump is expired, set fall velocity
     if (!jump.active())
     {
-        *rel_vel_y = std::min(*rel_vel_y + (g_sign * gravity_val * time.asMilliseconds()), max_fall_speed);
+        velocity->y = std::min(velocity->y + (g_sign * gravity_val * time.asMilliseconds()), max_fall_speed);
     }
 
     // Calculate delta Y
     //const int delta = (int) round(velocity->y * time.asMilliseconds());
-    const int delta = (int) round(*rel_vel_y * time.asMilliseconds());
+    const int delta = (int) round(velocity->y * time.asMilliseconds());
 
     // Player is moving down
     if (delta > 0)
@@ -425,8 +433,8 @@ void Player::updateY(sf::Time time, Map map)
         // Collision
         if (data.collided)
         {
-            *rel_pos_y = data.row * Game::tile_size - collision_y.bottom();
-            *rel_vel_y = 0;
+            position->y = data.row * Game::tile_size - collision_y.bottom();
+            velocity->y = 0;
             if (gravity == DOWN)
             {
                 on_ground = true;
@@ -435,7 +443,7 @@ void Player::updateY(sf::Time time, Map map)
         // No collision
         else
         {
-            *rel_pos_y += delta;
+            position->y += delta;
             if (gravity == DOWN)
             {
                 on_ground = false;
@@ -446,7 +454,7 @@ void Player::updateY(sf::Time time, Map map)
         data = setWallCollisionData(map, topCollision(0));
         if (data.collided)
         {
-            *rel_pos_y = data.row * Game::tile_size + collision_y.height();
+            position->y = data.row * Game::tile_size + collision_y.height();
         }
     }
     // Player is moving up
@@ -457,8 +465,8 @@ void Player::updateY(sf::Time time, Map map)
         if (data.collided)
         {
             //jump.endJump();
-            *rel_pos_y = data.row * Game::tile_size + collision_y.height();
-            *rel_vel_y = 0;
+            position->y = data.row * Game::tile_size + collision_y.height();
+            velocity->y = 0;
             if (gravity == UP)
             {
                 on_ground = true;
@@ -466,10 +474,10 @@ void Player::updateY(sf::Time time, Map map)
         }
         else
         {
-            *rel_pos_y += delta;
-            if (*rel_pos_y < 0)
+            position->y += delta;
+            if (position->y < 0)
             {
-                *rel_pos_y = 0;
+                position->y = 0;
             }
             if (gravity == UP)
             {
@@ -480,7 +488,7 @@ void Player::updateY(sf::Time time, Map map)
         data = setWallCollisionData(map, bottomCollision(0));
         if (data.collided)
         {
-            *rel_pos_y = data.row * Game::tile_size - collision_y.bottom();
+            position->y = data.row * Game::tile_size - collision_y.bottom();
         }
         
     }
@@ -505,9 +513,26 @@ void Player::updateX2(sf::Time time, Map map)
         {
             position->x = data.col * Game::tile_size - collision_x.width();
             velocity->x = 0;
+            if (gravity == RIGHT)
+            {
+                on_ground = true;
+            }
         }
-        finish the rest of this
+        else
+        {
+            position->x += delta;
+            if (gravity == RIGHT)
+            {
+                on_ground = false;
+            }
+        }
 
+        // Check on left
+        data = setWallCollisionData(map, leftCollision(0));
+        if (data.collided)
+        {
+            position->x = data.col * Game::tile_size + collision_x.width() + collision_x.left();
+        }
     }
     // Player moving left
     else
@@ -516,12 +541,20 @@ void Player::updateX2(sf::Time time, Map map)
 
         if (data.collided)
         {
-            position->x = data.row * Game::tile_size + collision_x.width();
+            position->x = data.col * Game::tile_size + collision_x.width();
             velocity->x = 0;
+            if (gravity == LEFT)
+            {
+                on_ground = true;
+            }
         }
         else
         {
             position->x += delta;
+            if (gravity == UP)
+            {
+                on_ground = false;
+            }
         }
 
         // Check on right
@@ -529,7 +562,75 @@ void Player::updateX2(sf::Time time, Map map)
         data = setWallCollisionData(map, rightCollision(0));
         if (data.collided)
         {
-            position->x = data.col * Game::tile_size - collision_x.width();
+            position->x = data.col * Game::tile_size - collision_x.right();
+        }
+    }
+}
+
+void Player::updateY2(sf::Time time, Map map)
+{
+    velocity->y += acceleration->x * time.asMilliseconds();
+
+    if (acceleration->x < 0.0f)
+    {
+        velocity->y = std::max(velocity->y, -maxSpeedX);
+    }
+    else if (acceleration->x > 0.0f)
+    {
+        velocity->y = std::min(velocity->y, maxSpeedX);
+    }
+    else
+    {
+        velocity->y *= slowDownFactor;
+    }
+
+    const int delta = (int) round(velocity->y * time.asMilliseconds());
+
+    // Player moving down
+    if (delta > 0)
+    {
+
+        // Check collision on bottom
+        CollisionData data = setWallCollisionData(map, bottomCollision(delta));
+
+        if (data.collided)
+        {
+            position->y = data.row * Game::tile_size - collision_y.bottom();
+            velocity->y = 0;
+        }
+        else
+        {
+            position->y += delta;
+        }
+
+        // Check top
+        data = setWallCollisionData(map, leftCollision(0));
+        if (data.collided)
+        {
+            position->y = data.row * Game::tile_size + collision_y.height();
+        }
+        
+    }
+    // Player is moving up
+    else
+    {
+        // Check top
+        CollisionData data = setWallCollisionData(map, topCollision(delta));
+        if (data.collided)
+        {
+            position->y = data.row * Game::tile_size + collision_y.height();
+            velocity->y = 0;
+        }
+        else
+        {
+            position->y += delta;
+        }
+        
+        // Check bottom
+        data = setWallCollisionData(map, bottomCollision(0));
+        if (data.collided)
+        {
+            position->y = data.row * Game::tile_size - collision_y.bottom();
         }
     }
 }
