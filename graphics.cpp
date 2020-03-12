@@ -19,6 +19,16 @@ Graphics::Graphics(int width, int height, int frame_rate, const std::string &hea
 
     view = new sf::View(sf::Vector2f(160, 120), sf::Vector2f(320, 240));
     window->setView(*view);
+
+    if (!font.loadFromFile("./fonts/Rubik-Medium.ttf"))
+    {
+        std::cout << "CAN'T LOAD FONT FILE" << std::endl;
+    }
+    win_message.setFont(font);
+    win_message.setString("WIN!");
+    win_message.setCharacterSize(32);
+    win_message.setStyle(sf::Text::Regular);
+    win_message.setColor(sf::Color::Yellow);
 }
 
 Graphics::~Graphics()
@@ -52,4 +62,10 @@ void Graphics::clear()
 void Graphics::display()
 {
     window->display();
+}
+
+void Graphics::winMessage(int x, int y)
+{
+    win_message.setPosition(x, y);
+    window->draw(win_message);
 }

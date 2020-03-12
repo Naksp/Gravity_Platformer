@@ -11,6 +11,8 @@
 // Constructor
 Game::Game()
 {
+    state = STARTING;
+
     // Set up Grahics
     graphics = new Graphics(1280, 960, 60, "Simple Platformer");
 
@@ -45,36 +47,39 @@ void Game::initPlayer(int x_pos, int y_pos)
 void Game::initLevels()
 {
     //level = new Level("./maps/test_map", "0", *graphics);
-    level = new Level("./levels/test_level", *graphics);
+    level = new Level("./levels/level_0", *graphics);
     current_level = 0;
 }
 
 // Process keyboard input and move player
 void Game::processInput(Input input)
 {
-    if (input.isKeyHeld(sf::Keyboard::A) && input.isKeyHeld(sf::Keyboard::D))
+    if (state == RUNNING)
     {
-        player->stopMoving();
-    }
-    else if (input.isKeyHeld(sf::Keyboard::A))
-    {
-        player->startMovingLeft();
-    }
-    else if (input.isKeyHeld(sf::Keyboard::D))
-    {
-        player->startMovingRight();
-    }
-    else if (input.isKeyHeld(sf::Keyboard::W))
-    {
-        player->startMovingUp();
-    }
-    else if (input.isKeyHeld(sf::Keyboard::S))
-    {
-        player->startMovingDown();
-    }
-    else
-    {
-        player->stopMoving();
+        if (input.isKeyHeld(sf::Keyboard::A) && input.isKeyHeld(sf::Keyboard::D))
+        {
+            player->stopMoving();
+        }
+        else if (input.isKeyHeld(sf::Keyboard::A))
+        {
+            player->startMovingLeft();
+        }
+        else if (input.isKeyHeld(sf::Keyboard::D))
+        {
+            player->startMovingRight();
+        }
+        else if (input.isKeyHeld(sf::Keyboard::W))
+        {
+            player->startMovingUp();
+        }
+        else if (input.isKeyHeld(sf::Keyboard::S))
+        {
+            player->startMovingDown();
+        }
+        else
+        {
+            player->stopMoving();
+        }
     }
     
     // Jump
@@ -113,7 +118,11 @@ void Game::update(sf::Time frameTime)
     // TODO: Change this value back
     //sf::Time testTime = sf::milliseconds(16);
     //player->update(testTime, *map);
-    player->update(frameTime, *level);
+    player->update(frameTime, *level->getMap());
+    if (level->update(*player))
+    {
+        state = WON;
+    }
 }
 
 // Draw game objects
@@ -123,6 +132,11 @@ void Game::draw()
     level->draw(*graphics);
     player->draw(*graphics);
     //player->drawCollision(*graphics);
+    if (state == WON)
+    {
+        //std::cout << "YOU WON!" << std::endl;
+        graphics->winMessage(50, 50);
+    }
     graphics->display();
 }
 
@@ -136,6 +150,8 @@ void Game::eventLoop()
     sf::Time frameTime;
 
     sf::sleep(sf::milliseconds(16));
+
+    state = RUNNING;
 
     // Event Loop
     while (graphics->window->isOpen())

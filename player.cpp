@@ -20,7 +20,7 @@ namespace
 
     // Jump constants
     const float jump_speed = 0.22f;
-    const float jump_time = 300;
+    const float jump_time = 125;
     const int jump_frame = 5;
     const int fall_frame = 1;
 
@@ -72,6 +72,8 @@ Player::Player(float x, float y, Graphics &graphics) :
     velocity = new sf::Vector2f(0.0f, 0.0f);
     acceleration = new sf::Vector2f(0.0f, 0.0f);
 
+    rect = new sf::IntRect(x, y, 16, 16);
+
     // Set initial sprite position
     sprites[getSpriteState()]->setPosition(*position);
 
@@ -88,21 +90,24 @@ Player::~Player()
     delete acceleration;
 }
 
-void Player::update(sf::Time time, Level &level)
+void Player::update(sf::Time time, Map &map)
 {
     // Update jump duration
     jump.update(time.asMilliseconds());
 
     if (gravity == UP || gravity == DOWN)
     {
-        updateX(time, *level.getMap());
-        updateY(time, *level.getMap());
+        updateX(time, map);
+        updateY(time, map); 
     }
     else
     {
-        updateX2(time, *level.getMap());
-        updateY2(time, *level.getMap());
+        updateX2(time, map); 
+        updateY2(time, map);
     }
+
+    rect->left = position->x;
+    rect->top = position->y;
     
 
     sprites[getSpriteState()]->update(time.asMilliseconds());
@@ -279,11 +284,25 @@ void Player::drawCollision(Graphics &graphics)
     sf::RectangleShape x_rectangle = collision_x.toRectangle(sf::Color::Blue);
     sf::RectangleShape y_rectangle = collision_y.toRectangle(sf::Color::Green);
 
+    sf::RectangleShape rect_rectangle;
+    rect_rectangle.setSize(sf::Vector2f(16, 16));
+    rect_rectangle.setPosition(*position);
+    rect_rectangle.setOutlineColor(sf::Color::Red);
+    rect_rectangle.setOutlineThickness(1);
+    rect_rectangle.setFillColor(sf::Color::Transparent);
+
+
     x_rectangle.setPosition(sf::Vector2f(position->x + collision_x.left(), position->y + collision_x.top()));
     y_rectangle.setPosition(sf::Vector2f(position->x + collision_y.left(), position->y + collision_y.top()));
 
     graphics.window->draw(x_rectangle);
     graphics.window->draw(y_rectangle);
+    graphics.window->draw(rect_rectangle);
+}
+
+sf::IntRect* Player::getRect()
+{
+    return rect;
 }
 
 // Initialize Player sprites

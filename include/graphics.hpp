@@ -20,6 +20,8 @@ class Graphics
         // Display window
         void display();
 
+        void winMessage(int x, int y);
+
     public:
         // Window object
         sf::RenderWindow *window;
@@ -31,6 +33,9 @@ class Graphics
         int frame_rate;
 
         std::map<std::string, sf::Texture> sprite_sheets; 
+
+        sf::Text win_message;
+        sf::Font font;
 
 };
 

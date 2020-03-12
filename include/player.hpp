@@ -4,7 +4,6 @@
 #include <boost/shared_ptr.hpp>
 
 #include "animatedSprite.hpp"
-#include "level.hpp"
 #include "map.hpp"
 #include "mapRect.hpp"
 
@@ -18,7 +17,7 @@ class Player
         ~Player();
 
         // Update player
-        void update(sf::Time time, Level &level);
+        void update(sf::Time time, Map &map);
 
         // Movement functions
         void startMovingRight();
@@ -47,6 +46,8 @@ class Player
 
         void draw(Graphics &graphics);
         void drawCollision(Graphics &graphics);
+
+        sf::IntRect* getRect();
 
     private:
         /**
@@ -138,6 +139,8 @@ class Player
         MapRect rightCollision(int delta) const;
         MapRect topCollision(int delta) const;
         MapRect bottomCollision(int delta) const;
+
+        sf::IntRect *rect;
 
         bool onGround() const { return on_ground; }
 

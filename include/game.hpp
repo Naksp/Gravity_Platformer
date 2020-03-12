@@ -36,6 +36,7 @@ struct Game
 
     public:
         static const int tile_size = 16;
+
     // Private variables
     private:
         // Grahics
@@ -47,6 +48,10 @@ struct Game
         // Levels
         Level *level;
         int current_level;
+
+        enum Gamestate {STARTING, RUNNING, WON};
+
+        Gamestate state;
 };
 
 #endif

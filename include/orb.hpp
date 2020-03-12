@@ -13,6 +13,7 @@ class Orb
         ~Orb();
 
         void draw(Graphics &graphics);
+        sf::IntRect* getRect();
 
     private:
         AnimatedSprite *sprite;
