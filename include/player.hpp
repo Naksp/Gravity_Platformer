@@ -22,6 +22,8 @@ class Player
         // Movement functions
         void startMovingRight();
         void startMovingLeft();
+        void startMovingUp();
+        void startMovingDown();
         void stopMoving();
 
         // Gravity change

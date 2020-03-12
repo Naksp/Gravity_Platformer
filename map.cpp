@@ -55,13 +55,11 @@ Map* Map::loadMapFile(const std::string file_path, Graphics &graphics)
             num_cols, Tile()));
 
     // TODO make this a function to load from file
-    /*
     map->textures = vector<sf::Texture>();
-    map->textures[0] = graphics.loatTexture("./resources/metal_tile.png");
+    map->textures.push_back(graphics.loatTexture("./resources/metal_tile.png"));
     shared_ptr<sf::Sprite> sprite(new sf::Sprite(map->textures[0]));
-    */
-   map->texture = graphics.loatTexture("./resources/metal_tile.png");
-   shared_ptr<sf::Sprite> sprite(new sf::Sprite(map->texture));
+   //map->texture = graphics.loatTexture("./resources/metal_tile.png");
+   //shared_ptr<sf::Sprite> sprite(new sf::Sprite(map->texture));
 
     Tile tile(WALL_TILE, sprite);
 
@@ -92,6 +90,8 @@ Map* Map::loadMapFile(const std::string file_path, Graphics &graphics)
             }
             row++;
         }
+
+        map_file.close();
     }
 
     return map;

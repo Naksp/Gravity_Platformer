@@ -54,6 +54,14 @@ void Game::processInput(Input input)
     {
         player->startMovingRight();
     }
+    else if (input.isKeyHeld(sf::Keyboard::W))
+    {
+        player->startMovingUp();
+    }
+    else if (input.isKeyHeld(sf::Keyboard::S))
+    {
+        player->startMovingDown();
+    }
     else
     {
         player->stopMoving();
@@ -117,7 +125,7 @@ void Game::eventLoop()
     sf::Clock frameClock;
     sf::Time frameTime;
 
-    map = Map::loadMapFile("./maps/blank_map", *graphics);
+    map = Map::loadMapFile("./maps/test_map", *graphics);
     sf::sleep(sf::milliseconds(16));
 
     // Event Loop

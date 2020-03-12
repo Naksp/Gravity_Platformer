@@ -111,14 +111,39 @@ void Player::update(sf::Time time, Map map)
 
 void Player::startMovingRight()
 {
-    facing = (gravity == DOWN || gravity == LEFT) ? FRONT : BACK;
-    acceleration->x = walkingAcceleration;
+    if (gravity == DOWN || gravity == UP)
+    {
+        facing = (gravity == DOWN || gravity == LEFT) ? FRONT : BACK;
+        acceleration->x = walkingAcceleration;
+    }
 }
 
 void Player::startMovingLeft()
 {
-    facing = (gravity == DOWN || gravity == LEFT) ? BACK : FRONT;
-    acceleration->x = -walkingAcceleration;
+    if (gravity == DOWN || gravity == UP)
+    {
+        facing = (gravity == DOWN || gravity == LEFT) ? BACK : FRONT;
+        acceleration->x = -walkingAcceleration;
+    }
+}
+
+void Player::startMovingUp()
+{
+    if (gravity == LEFT || gravity == RIGHT)
+    {
+        facing = (gravity == DOWN || gravity == LEFT) ? BACK : FRONT;
+        acceleration->x = -walkingAcceleration;
+    }
+}
+
+void Player::startMovingDown()
+{
+    if (gravity == LEFT || gravity == RIGHT)
+    {
+        facing = (gravity == DOWN || gravity == LEFT) ? FRONT : BACK;
+        acceleration->x = walkingAcceleration;
+    }
+
 }
 
 void Player::stopMoving()
