@@ -62,7 +62,20 @@ class Player
          */
         void updateY(sf::Time time, Map map);
 
+        /**
+         * Updatas X direction for horizontal gravity
+         * 
+         * @param time  Time of last frame
+         * @param map   Map of sprites
+         */
         void updateX2(sf::Time time, Map map);
+
+        /**
+         * Updatas Y direction for horizontal gravity
+         * 
+         * @param time  Time of last frame
+         * @param map   Map of sprites
+         */
         void updateY2(sf::Time time, Map map);
 
     // Private variables
@@ -131,10 +144,6 @@ class Player
         Facing facing;
 
         Gravity gravity;
-        float *rel_vel_x;
-        float *rel_vel_y;
-        float *rel_pos_x;
-        float *rel_pos_y;
         int g_sign;
 
         // Movement vectors

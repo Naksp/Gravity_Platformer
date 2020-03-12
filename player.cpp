@@ -25,7 +25,7 @@ namespace
     const int fall_frame = 1;
 
     // Collision constants
-    const MapRect collision_x(0, 5, 16, 6);
+    const MapRect collision_x(0, 3, 16, 9);
     const MapRect collision_y(3, 0, 9, 16);
 
     struct CollisionData
@@ -72,11 +72,6 @@ Player::Player(float x, float y, Graphics &graphics) :
     velocity = new sf::Vector2f(0.0f, 0.0f);
     acceleration = new sf::Vector2f(0.0f, 0.0f);
 
-    //velocity->x = &velocity->x;
-    //velocity->y = &velocity->y;
-    rel_pos_x = &position->x;
-    rel_pos_y = &position->y;
-
     // Set initial sprite position
     sprites[getSpriteState()]->setPosition(*position);
 
@@ -116,19 +111,18 @@ void Player::update(sf::Time time, Map map)
 
 void Player::startMovingRight()
 {
-    facing = FRONT;
+    facing = (gravity == DOWN || gravity == LEFT) ? FRONT : BACK;
     acceleration->x = walkingAcceleration;
 }
 
 void Player::startMovingLeft()
 {
-    facing = BACK;
+    facing = (gravity == DOWN || gravity == LEFT) ? BACK : FRONT;
     acceleration->x = -walkingAcceleration;
 }
 
 void Player::stopMoving()
 {
-    //facing = STILL;
     acceleration->x = 0.0f;
 }
 

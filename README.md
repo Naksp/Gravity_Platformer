@@ -6,6 +6,7 @@ A simple platforming game made with C++ using [SFML](https://www.sfml-dev.org/).
 * Player movement based on keyboard input with momentum
 * Tile based map that loads from file
 * Player collision detection
+* Player can change direcion of gravity in order to complete puzzles and platforming sections (puzzles and platforming secions pending)
 
 ## Running the Game
 Run `make run` command in `Simple_Platformer` folder.
