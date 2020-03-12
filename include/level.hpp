@@ -5,11 +5,13 @@
 
 #include "graphics.hpp"
 #include "map.hpp"
+#include "orb.hpp"
 
 class Level
 {
     public:
         Level(const std::string map_path, const std::string texture_path, Graphics &graphics);
+        Level(const std::string level_path, Graphics &graphics);
         ~Level();
 
         Map* getMap();
@@ -22,6 +24,8 @@ class Level
     private:
         Map* map;
         std::vector<sf::Texture> textures;
+
+        Orb* orb;
 };
 
 #endif

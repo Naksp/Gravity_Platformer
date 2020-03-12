@@ -12,7 +12,7 @@
 Game::Game()
 {
     // Set up Grahics
-    graphics = new Graphics(1280, 960, 60, "Test 3");
+    graphics = new Graphics(1280, 960, 60, "Simple Platformer");
 
     // Set up Player
     initPlayer();
@@ -44,7 +44,8 @@ void Game::initPlayer(int x_pos, int y_pos)
 
 void Game::initLevels()
 {
-    level = new Level("./maps/test_map", "0", *graphics);
+    //level = new Level("./maps/test_map", "0", *graphics);
+    level = new Level("./levels/test_level", *graphics);
     current_level = 0;
 }
 

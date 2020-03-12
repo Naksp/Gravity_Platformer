@@ -35,11 +35,10 @@ sf::Texture Graphics::loatTexture(const std::string &file_path)
         {
             std::cerr << "ERROR: Failed to load texture!" << std::endl;
         }
-        std::cout << "Done!" << std::endl;
     }
     else
     {
-        std::cout << "Loading texture from cache." << std::endl;
+        std::cout << "Loading " << file_path << " from cache." << std::endl;
     }
 
     return sprite_sheets[file_path];

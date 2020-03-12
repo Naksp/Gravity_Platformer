@@ -84,8 +84,6 @@ class Player
     // Private variables
     private:
         sf::Vector2f *spawn_point;
-        // Player Texture
-        sf::Texture texture;
 
         // Player state
         enum Motion {STANDING, WALKING, JUMPING, FALLING};
@@ -146,6 +144,7 @@ class Player
         // Current facing
         Facing facing;
 
+        // Gravity vars
         Gravity gravity;
         int g_sign;
 

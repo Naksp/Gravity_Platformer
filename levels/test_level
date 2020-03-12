@@ -1,5 +1,5 @@
-[MAPS]
+[MAP]
 ./maps/test_map
 
-[TEXTURES]
-./resources/metal_tile.png
+[ORB]
+16 16

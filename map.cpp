@@ -69,9 +69,10 @@ Map* Map::loadMapFile(const std::string file_path, Graphics &graphics)
     std::string line;
 
     int row = 0;
+    assert(map_file.is_open());
     if (map_file.is_open())
     {
-        std::cout << "Loading Map File..." << std::endl;
+        std::cout << "Loading map from " << file_path << std::endl;
         // Get next row
         while (std::getline(map_file, line) && row < num_rows)
         {
