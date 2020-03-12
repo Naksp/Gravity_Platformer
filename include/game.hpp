@@ -3,6 +3,7 @@
 
 #include "graphics.hpp"
 #include "input.hpp"
+#include "level.hpp"
 #include "map.hpp"
 #include "player.hpp"
 
@@ -18,6 +19,8 @@ struct Game
     private:
         void initPlayer();
         void initPlayer(int x_pos, int y_pos);
+
+        void initLevels();
 
         // Handle input
         void processInput(Input input);
@@ -41,7 +44,9 @@ struct Game
         // Player
         Player *player;
 
-        Map *map;
+        // Levels
+        Level *level;
+        int current_level;
 };
 
 #endif

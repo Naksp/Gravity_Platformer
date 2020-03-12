@@ -1,0 +1,5 @@
+[MAPS]
+./maps/test_map
+
+[TEXTURES]
+./resources/metal_tile.png

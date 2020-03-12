@@ -17,6 +17,9 @@ Game::Game()
     // Set up Player
     initPlayer();
 
+    // Set up levels
+    initLevels();
+
     // Start Event Loop
     eventLoop();
 }
@@ -26,7 +29,7 @@ Game::~Game()
 {
     delete graphics;
     delete player;
-    delete map;
+    delete level;
 }
 
 void Game::initPlayer()
@@ -37,6 +40,12 @@ void Game::initPlayer()
 void Game::initPlayer(int x_pos, int y_pos)
 {
     player = new Player(x_pos, y_pos, *graphics);
+}
+
+void Game::initLevels()
+{
+    level = new Level("./maps/test_map", "0", *graphics);
+    current_level = 0;
 }
 
 // Process keyboard input and move player
@@ -103,14 +112,14 @@ void Game::update(sf::Time frameTime)
     // TODO: Change this value back
     //sf::Time testTime = sf::milliseconds(16);
     //player->update(testTime, *map);
-    player->update(frameTime, *map);
+    player->update(frameTime, *level);
 }
 
 // Draw game objects
 void Game::draw()
 {
     graphics->clear();
-    map->draw(*graphics);
+    level->draw(*graphics);
     player->draw(*graphics);
     //player->drawCollision(*graphics);
     graphics->display();
@@ -125,7 +134,6 @@ void Game::eventLoop()
     sf::Clock frameClock;
     sf::Time frameTime;
 
-    map = Map::loadMapFile("./maps/test_map", *graphics);
     sf::sleep(sf::milliseconds(16));
 
     // Event Loop

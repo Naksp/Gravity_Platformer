@@ -88,20 +88,20 @@ Player::~Player()
     delete acceleration;
 }
 
-void Player::update(sf::Time time, Map map)
+void Player::update(sf::Time time, Level &level)
 {
     // Update jump duration
     jump.update(time.asMilliseconds());
 
     if (gravity == UP || gravity == DOWN)
     {
-        updateX(time, map);
-        updateY(time, map);
+        updateX(time, *level.getMap());
+        updateY(time, *level.getMap());
     }
     else
     {
-        updateX2(time, map);
-        updateY2(time, map);
+        updateX2(time, *level.getMap());
+        updateY2(time, *level.getMap());
     }
     
 
@@ -356,7 +356,7 @@ MapRect Player::bottomCollision(int delta) const
                    collision_y.height() / 2 + delta);
 }
 
-void Player::updateX(sf::Time time, Map map)
+void Player::updateX(sf::Time time, Map &map)
 {
     // Update velocity
     velocity->x += acceleration->x * time.asMilliseconds();
@@ -430,7 +430,7 @@ void Player::updateX(sf::Time time, Map map)
     }
 }
 
-void Player::updateY(sf::Time time, Map map)
+void Player::updateY(sf::Time time, Map &map)
 {
 
     // If jump is expired, set fall velocity
@@ -513,7 +513,7 @@ void Player::updateY(sf::Time time, Map map)
     }
 }
 
-void Player::updateX2(sf::Time time, Map map)
+void Player::updateX2(sf::Time time, Map &map)
 {
     // If jump is expired, set fall velocity
     if (!jump.active())
@@ -586,7 +586,7 @@ void Player::updateX2(sf::Time time, Map map)
     }
 }
 
-void Player::updateY2(sf::Time time, Map map)
+void Player::updateY2(sf::Time time, Map &map)
 {
     velocity->y += acceleration->x * time.asMilliseconds();
 

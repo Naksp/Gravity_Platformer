@@ -4,6 +4,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include "animatedSprite.hpp"
+#include "level.hpp"
 #include "map.hpp"
 #include "mapRect.hpp"
 
@@ -17,7 +18,7 @@ class Player
         ~Player();
 
         // Update player
-        void update(sf::Time time, Map map);
+        void update(sf::Time time, Level &level);
 
         // Movement functions
         void startMovingRight();
@@ -54,7 +55,7 @@ class Player
          * @param time  Time of last frame
          * @param map   Map of sprites
          */
-        void updateX(sf::Time time, Map map);
+        void updateX(sf::Time time, Map &map);
 
         /**
          * Update Y direction of movement vectors
@@ -62,7 +63,7 @@ class Player
          * @param time  Time of last frame
          * @param map   Map of sprites
          */
-        void updateY(sf::Time time, Map map);
+        void updateY(sf::Time time, Map &map);
 
         /**
          * Updatas X direction for horizontal gravity
@@ -70,7 +71,7 @@ class Player
          * @param time  Time of last frame
          * @param map   Map of sprites
          */
-        void updateX2(sf::Time time, Map map);
+        void updateX2(sf::Time time, Map &map);
 
         /**
          * Updatas Y direction for horizontal gravity
@@ -78,7 +79,7 @@ class Player
          * @param time  Time of last frame
          * @param map   Map of sprites
          */
-        void updateY2(sf::Time time, Map map);
+        void updateY2(sf::Time time, Map &map);
 
     // Private variables
     private:
