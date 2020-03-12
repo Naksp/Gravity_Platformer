@@ -22,6 +22,9 @@ struct Game
 
         void initLevels();
 
+        void loadNextLevel();
+        void loadLevel(int level);
+
         // Handle input
         void processInput(Input input);
 
@@ -46,7 +49,8 @@ struct Game
         Player *player;
 
         // Levels
-        Level *level;
+        //Level *level;
+        std::vector<Level*> levels;
         int current_level;
 
         enum Gamestate {STARTING, RUNNING, WON};

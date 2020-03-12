@@ -1,5 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include <vector>
 
 #include "include/game.hpp"
@@ -31,7 +33,6 @@ Game::~Game()
 {
     delete graphics;
     delete player;
-    delete level;
 }
 
 void Game::initPlayer()
@@ -46,9 +47,37 @@ void Game::initPlayer(int x_pos, int y_pos)
 
 void Game::initLevels()
 {
-    //level = new Level("./maps/test_map", "0", *graphics);
-    level = new Level("./levels/level_0", *graphics);
+    std::fstream level_list_file;
+    level_list_file.open("./levels/level_list");
+
+    if (level_list_file.is_open())
+    {
+
+        std::string level_path;
+        while (std::getline(level_list_file, level_path))
+        {
+            levels.push_back(new Level(level_path, *graphics));
+        }
+    }
+
     current_level = 0;
+}
+
+void Game::loadNextLevel()
+{
+    if (current_level == levels.size()-1)
+    {
+        graphics->window->close();
+        return;
+    }
+    loadLevel(++current_level);
+}
+
+void Game::loadLevel(int level)
+{
+    current_level = level;
+    state = RUNNING;
+    player->respawn();
 }
 
 // Process keyboard input and move player
@@ -85,7 +114,14 @@ void Game::processInput(Input input)
     // Jump
     if (input.wasKeyPressed(sf::Keyboard::Space))
     {
-        player->startJump();
+        if (state == RUNNING)
+        {
+            player->startJump();
+        }
+        else if (state == WON)
+        {
+            loadNextLevel();
+        }
     }
     else if (input.wasKeyReleased(sf::Keyboard::Space))
     {
@@ -118,8 +154,8 @@ void Game::update(sf::Time frameTime)
     // TODO: Change this value back
     //sf::Time testTime = sf::milliseconds(16);
     //player->update(testTime, *map);
-    player->update(frameTime, *level->getMap());
-    if (level->update(*player))
+    player->update(frameTime, *levels[current_level]->getMap());
+    if (levels[current_level]->update(*player))
     {
         state = WON;
     }
@@ -129,12 +165,11 @@ void Game::update(sf::Time frameTime)
 void Game::draw()
 {
     graphics->clear();
-    level->draw(*graphics);
+    levels[current_level]->draw(*graphics);
     player->draw(*graphics);
     //player->drawCollision(*graphics);
     if (state == WON)
     {
-        //std::cout << "YOU WON!" << std::endl;
         graphics->winMessage(50, 50);
     }
     graphics->display();

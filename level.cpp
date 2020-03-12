@@ -40,6 +40,7 @@ Level::Level(const std::string level_path, Graphics &graphics)
 
                 // Create new orb
                 orb = new Orb(x, y, graphics);
+                std::cout << "Orb at " << x << ", " << y << std::endl;
             }
         }
     }
@@ -62,7 +63,6 @@ int Level::update(Player &player)
 {
     if (player.getRect()->intersects(*orb->getRect()))
     {
-        //std::cout << "YOU WON!" << std::endl;
         return 1;
     }
     
@@ -73,4 +73,5 @@ void Level::draw(Graphics &graphics)
 {
     map->draw(graphics);
     orb->draw(graphics);
+    //std::cout << orb->getRect()->left << "," << orb->getRect()->top << std::endl;
 }

@@ -246,6 +246,9 @@ void Player::setSpawn(sf::Vector2f &spawn)
 
 void Player::respawn()
 {
+    velocity->x = 0;
+    velocity->y = 0;
+    acceleration->x = 0;
     setPosition(*spawn_point);
 }
 
