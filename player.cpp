@@ -148,7 +148,6 @@ void Player::startMovingDown()
         facing = (gravity == DOWN || gravity == LEFT) ? FRONT : BACK;
         acceleration->x = walkingAcceleration;
     }
-
 }
 
 void Player::stopMoving()
@@ -473,7 +472,6 @@ void Player::updateY(sf::Time time, Map &map)
     }
 
     // Calculate delta Y
-    //const int delta = (int) round(velocity->y * time.asMilliseconds());
     const int delta = (int) round(velocity->y * time.asMilliseconds());
 
     // Player is moving down

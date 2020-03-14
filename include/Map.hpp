@@ -4,6 +4,7 @@
 #include <boost/shared_array.hpp>
 #include <vector>
 
+#include "HorizGravBlock.hpp"
 #include "MapRect.hpp"
 
 class Map
@@ -26,7 +27,7 @@ class Map
 
         static Map* createTestMap(Graphics &graphics);
         
-        static Map* loadMapFile(const std::string file_path ,Graphics &graphics);
+        static Map* loadMapFile(const std::string file_path, std::vector<HorizGravBlock*> &grav_boxes, Graphics &graphics);
 
         //std::vector<CollisionTile> getCollidingTiles(const sf::IntRect &rect) const;
         std::vector<CollisionTile> getCollidingTiles(const MapRect &rect) const;

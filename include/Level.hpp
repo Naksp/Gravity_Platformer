@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "Graphics.hpp"
+#include "HorizGravBlock.hpp"
 #include "Map.hpp"
 #include "Orb.hpp"
 #include "Player.hpp"
@@ -26,7 +27,7 @@ class Level
 
         void start(Player &player);
 
-        int update(Player &player);
+        int update(Player &player, sf::Time time);
 
         void draw(Graphics &graphics);
 
@@ -40,8 +41,10 @@ class Level
         Gravity gravity;
 
         sf::Vector2f *player_spawn;
+    
+        std::vector<HorizGravBlock*> *h_grav_blocks;
 
-        Orb* orb;
+        Orb *orb;
 };
 
 #endif

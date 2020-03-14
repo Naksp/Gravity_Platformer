@@ -5,6 +5,7 @@
 
 #include "include/Game.hpp"
 #include "include/Graphics.hpp"
+#include "include/HorizGravBlock.hpp"
 #include "include/Map.hpp"
 #include "include/MapRect.hpp"
 
@@ -46,7 +47,7 @@ Map* Map::createTestMap(Graphics &graphics)
     return map;
 }
 
-Map* Map::loadMapFile(const std::string file_path, Graphics &graphics)
+Map* Map::loadMapFile(const std::string file_path, std::vector<HorizGravBlock*> &grav_boxes, Graphics &graphics)
 {
     // Create new map
     Map *map = new Map();
@@ -86,6 +87,10 @@ Map* Map::loadMapFile(const std::string file_path, Graphics &graphics)
                 if (val == 1)
                 {
                     map->tiles[row][col] = tile;
+                }
+                if (val == 2)
+                {
+                    grav_boxes.push_back(new HorizGravBlock(col * Game::tile_size, row * Game::tile_size));
                 }
                 col++;
             }

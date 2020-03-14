@@ -10,6 +10,7 @@
 #include "include/Map.hpp"
 #include "include/Player.hpp"
 
+
 // Constructor
 Game::Game()
 {
@@ -116,8 +117,30 @@ void Game::processInput(Input input)
         {
             player->stopMoving();
         }
+
+        // Player Rotation
+        if (input.wasKeyPressed(sf::Keyboard::J))
+        {
+            //player->setGravityLeft();
+            levels[current_level]->setGravityLeft(*player);
+        }
+        else if (input.wasKeyPressed(sf::Keyboard::K))
+        {
+            //player->setGravityDown();
+            levels[current_level]->setGravityDown(*player);
+        }
+        else if (input.wasKeyPressed(sf::Keyboard::L))
+        {
+            //player->setGravityRight();
+            levels[current_level]->setGravityRight(*player);
+        }
+        else if (input.wasKeyPressed(sf::Keyboard::I))
+        {
+            //player->setGravityUp();
+            levels[current_level]->setGravityUp(*player);
+        }
     }
-    
+
     // Jump
     if (input.wasKeyPressed(sf::Keyboard::Space))
     {
@@ -127,34 +150,13 @@ void Game::processInput(Input input)
         }
         else if (state == WON)
         {
-            loadNextLevel();
+            loadNextLevel(); 
         }
+        
     }
     else if (input.wasKeyReleased(sf::Keyboard::Space))
     {
         player->stopJump();
-    }
-
-    // Player Rotation
-    if (input.wasKeyPressed(sf::Keyboard::J))
-    {
-        //player->setGravityLeft();
-        levels[current_level]->setGravityLeft(*player);
-    }
-    else if (input.wasKeyPressed(sf::Keyboard::K))
-    {
-        //player->setGravityDown();
-        levels[current_level]->setGravityDown(*player);
-    }
-    else if (input.wasKeyPressed(sf::Keyboard::L))
-    {
-        //player->setGravityRight();
-        levels[current_level]->setGravityRight(*player);
-    }
-    else if (input.wasKeyPressed(sf::Keyboard::I))
-    {
-        //player->setGravityUp();
-        levels[current_level]->setGravityUp(*player);
     }
 
 }
@@ -166,7 +168,7 @@ void Game::update(sf::Time frameTime)
     //sf::Time testTime = sf::milliseconds(16);
     //player->update(testTime, *map);
     player->update(frameTime, *levels[current_level]->getMap());
-    if (levels[current_level]->update(*player))
+    if (levels[current_level]->update(*player, frameTime))
     {
         state = WON;
     }

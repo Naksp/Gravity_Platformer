@@ -39,6 +39,8 @@ struct Game
 
     public:
         static const int tile_size = 16;
+        static constexpr float gravity_acc = 0.002f;
+
         enum Gravity {UP, DOWN, LEFT, RIGHT};
 
     // Private variables

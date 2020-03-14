@@ -3,6 +3,7 @@
 #include <sstream>
 #include <iostream>
 
+#include "./include/HorizGravBlock.hpp"
 #include "./include/Level.hpp"
 #include "./include/Orb.hpp"
 #include "./include/Player.hpp"
@@ -11,6 +12,9 @@ Level::Level(const std::string level_path, Player &player, Graphics &graphics)
 {
     std::cout << "--------------------------------------------" << std::endl;
     std::cout << "Loading level from " << level_path << "..." << std::endl;
+
+    h_grav_blocks = new std::vector<HorizGravBlock*>();
+
     // Open file stream
     std::ifstream level_file;
     level_file.open(level_path);
@@ -27,7 +31,7 @@ Level::Level(const std::string level_path, Player &player, Graphics &graphics)
             {
                 // Create new map
                 std::getline(level_file, line);
-                map = Map::loadMapFile(line, graphics);
+                map = Map::loadMapFile(line, *h_grav_blocks, graphics);
 
                 map_load = true;
             }
@@ -120,21 +124,41 @@ void Level::setGravityLeft(Player &player)
 {
     gravity = LEFT;
     player.setGravityLeft();
+
+    for (uint i = 0; i < h_grav_blocks->size(); i++)
+    {
+        h_grav_blocks->at(i)->startMovingLeft();
+    }
 }
 void Level::setGravityRight(Player &player)
 {
     gravity = RIGHT;
     player.setGravityRight();
+
+    for (uint i = 0; i < h_grav_blocks->size(); i++)
+    {
+        h_grav_blocks->at(i)->startMovingRight();
+    }
 }
 void Level::setGravityUp(Player &player)
 {
     gravity = UP;
     player.setGravityUp();
+
+    for (uint i = 0; i < h_grav_blocks->size(); i++)
+    {
+        h_grav_blocks->at(i)->stopMoving();
+    }
 }
 void Level::setGravityDown(Player &player)
 {
     gravity = DOWN;
     player.setGravityDown();
+
+    for (uint i = 0; i < h_grav_blocks->size(); i++)
+    {
+        h_grav_blocks->at(i)->stopMoving();
+    }
 }
 
 int Level::getGravity()
@@ -165,11 +189,16 @@ void Level::start(Player &player)
     player.setSpawn(*player_spawn);
 }
 
-int Level::update(Player &player)
+int Level::update(Player &player, sf::Time time)
 {
     if (player.getRect()->intersects(*orb->getRect()))
     {
         return 1;
+    }
+    // TODO add collision detection
+    for (uint i = 0; i < h_grav_blocks->size(); i++)
+    {
+        h_grav_blocks->at(i)->update(time);
     }
     
     return 0;
@@ -178,6 +207,10 @@ int Level::update(Player &player)
 void Level::draw(Graphics &graphics)
 {
     map->draw(graphics);
+    for (uint i = 0; i < h_grav_blocks->size(); i++)
+    {
+        h_grav_blocks->at(i)->draw(graphics);
+    }
     orb->draw(graphics);
     //std::cout << orb->getRect()->left << "," << orb->getRect()->top << std::endl;
 }
