@@ -3,9 +3,9 @@
 #include <sstream>
 #include <iostream>
 
-#include "./include/level.hpp"
-#include "./include/orb.hpp"
-#include "./include/player.hpp"
+#include "./include/Level.hpp"
+#include "./include/Orb.hpp"
+#include "./include/Player.hpp"
 
 Level::Level(const std::string level_path, Player &player, Graphics &graphics)
 {

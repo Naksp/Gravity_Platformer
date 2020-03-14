@@ -3,10 +3,10 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "graphics.hpp"
-#include "map.hpp"
-#include "orb.hpp"
-#include "player.hpp"
+#include "Graphics.hpp"
+#include "Map.hpp"
+#include "Orb.hpp"
+#include "Player.hpp"
 
 class Level
 {

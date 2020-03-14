@@ -1,4 +1,4 @@
-#include "include/input.hpp"
+#include "include/Input.hpp"
 
 void Input::beginNewFrame()
 {

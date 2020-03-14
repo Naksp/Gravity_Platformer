@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include "include/game.hpp"
+
+#include "include/Game.hpp"
 
 // TODO: Add java-doc comments for all files
 

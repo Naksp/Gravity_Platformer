@@ -1,11 +1,11 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "graphics.hpp"
-#include "input.hpp"
-#include "level.hpp"
-#include "map.hpp"
-#include "player.hpp"
+#include "Graphics.hpp"
+#include "Input.hpp"
+#include "Level.hpp"
+#include "Map.hpp"
+#include "Player.hpp"
 
 struct Game
 {

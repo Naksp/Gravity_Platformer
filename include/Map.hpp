@@ -4,7 +4,7 @@
 #include <boost/shared_array.hpp>
 #include <vector>
 
-#include "mapRect.hpp"
+#include "MapRect.hpp"
 
 class Map
 {

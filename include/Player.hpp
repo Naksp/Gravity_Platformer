@@ -3,9 +3,9 @@
 
 #include <boost/shared_ptr.hpp>
 
-#include "animatedSprite.hpp"
-#include "map.hpp"
-#include "mapRect.hpp"
+#include "AnimatedSprite.hpp"
+#include "Map.hpp"
+#include "MapRect.hpp"
 
 class Player
 {

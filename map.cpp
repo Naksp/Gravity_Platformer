@@ -3,10 +3,10 @@
 #include <fstream>
 #include <sstream>
 
-#include "include/game.hpp"
-#include "include/graphics.hpp"
-#include "include/map.hpp"
-#include "include/mapRect.hpp"
+#include "include/Game.hpp"
+#include "include/Graphics.hpp"
+#include "include/Map.hpp"
+#include "include/MapRect.hpp"
 
 using boost::shared_ptr;
 using std::vector;

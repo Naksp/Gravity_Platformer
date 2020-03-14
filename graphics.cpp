@@ -1,7 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-#include "include/graphics.hpp"
+#include "include/Graphics.hpp"
 
 namespace
 {

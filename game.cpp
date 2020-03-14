@@ -4,11 +4,11 @@
 #include <sstream>
 #include <vector>
 
-#include "include/game.hpp"
-#include "include/graphics.hpp"
-#include "include/input.hpp"
-#include "include/map.hpp"
-#include "include/player.hpp"
+#include "include/Game.hpp"
+#include "include/Graphics.hpp"
+#include "include/Input.hpp"
+#include "include/Map.hpp"
+#include "include/Player.hpp"
 
 // Constructor
 Game::Game()

@@ -3,8 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "animatedSprite.hpp"
-#include "graphics.hpp"
+#include "AnimatedSprite.hpp"
+#include "Graphics.hpp"
 
 class Orb
 {

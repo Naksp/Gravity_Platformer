@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "graphics.hpp"
+#include "Graphics.hpp"
 
 class AnimatedSprite : public sf::Drawable
 {

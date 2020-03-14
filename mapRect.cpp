@@ -1,7 +1,7 @@
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 
-#include "include/mapRect.hpp"
+#include "include/MapRect.hpp"
 
 MapRect::MapRect(int left, int top, int width, int height)
 {

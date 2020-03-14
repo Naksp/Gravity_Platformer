@@ -1,8 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-#include "./include/animatedSprite.hpp"
-#include "./include/graphics.hpp"
+#include "./include/AnimatedSprite.hpp"
+#include "./include/Graphics.hpp"
 
 namespace
 {

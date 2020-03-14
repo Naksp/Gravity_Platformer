@@ -1,7 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-#include "./include/orb.hpp"
+#include "./include/Orb.hpp"
 
 Orb::Orb(int x, int y, Graphics &graphics)
 {

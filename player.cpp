@@ -2,10 +2,10 @@
 #include <iostream>
 #include <cmath>
 
-#include "include/game.hpp"
-#include "include/graphics.hpp"
-#include "include/mapRect.hpp"
-#include "include/player.hpp"
+#include "include/Game.hpp"
+#include "include/Graphics.hpp"
+#include "include/MapRect.hpp"
+#include "include/Player.hpp"
 
 namespace
 {
