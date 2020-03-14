@@ -1,4 +1,4 @@
-# Simple_Platformer ![](./img/robo_ball_logo.png "What a cutie")
+# Simple_Platformer <img src="./img/robo_ball_logo.png">
 A simple platforming game made with C++ using [SFML](https://www.sfml-dev.org/).
 
 ## Features Implemented in Simple_Platformer
