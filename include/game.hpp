@@ -39,9 +39,12 @@ struct Game
 
     public:
         static const int tile_size = 16;
+        enum Gravity {UP, DOWN, LEFT, RIGHT};
 
     // Private variables
     private:
+        // Debug
+        bool debug;
         // Grahics
         Graphics *graphics;
 
@@ -51,11 +54,13 @@ struct Game
         // Levels
         //Level *level;
         std::vector<Level*> levels;
-        int current_level;
+        u_int current_level;
 
         enum Gamestate {STARTING, RUNNING, WON};
 
         Gamestate state;
+
+        Gravity gravity;
 };
 
 #endif

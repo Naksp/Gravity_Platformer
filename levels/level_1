@@ -1,5 +1,11 @@
 [MAP]
 ./maps/map_1
 
+[PLAYER]
+16 208
+
 [ORB]
 288 112
+
+[GRAVITY]
+1

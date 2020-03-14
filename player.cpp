@@ -244,6 +244,12 @@ void Player::setSpawn(sf::Vector2f &spawn)
     spawn_point->y = spawn.y;
 }
 
+void Player::setSpawn(int x, int y)
+{
+    spawn_point->x = x;
+    spawn_point->y = y;
+}
+
 void Player::respawn()
 {
     velocity->x = 0;
@@ -265,6 +271,11 @@ void Player::setPosition(sf::Vector2f &vec)
 {
     position->x = vec.x;
     position->y = vec.y;
+}
+
+sf::Vector2f* Player::getPosition() const
+{
+    return position;
 }
 
 

@@ -13,6 +13,8 @@
 // Constructor
 Game::Game()
 {
+    debug = false;
+
     state = STARTING;
 
     // Set up Grahics
@@ -56,7 +58,7 @@ void Game::initLevels()
         std::string level_path;
         while (std::getline(level_list_file, level_path))
         {
-            levels.push_back(new Level(level_path, *graphics));
+            levels.push_back(new Level(level_path, *player, *graphics));
         }
     }
 
@@ -75,8 +77,13 @@ void Game::loadNextLevel()
 
 void Game::loadLevel(int level)
 {
+    if (level < 0)
+    {
+        return;
+    }
     current_level = level;
     state = RUNNING;
+    levels[current_level]->start(*player);
     player->respawn();
 }
 
@@ -131,19 +138,23 @@ void Game::processInput(Input input)
     // Player Rotation
     if (input.wasKeyPressed(sf::Keyboard::J))
     {
-        player->setGravityLeft();
+        //player->setGravityLeft();
+        levels[current_level]->setGravityLeft(*player);
     }
     else if (input.wasKeyPressed(sf::Keyboard::K))
     {
-        player->setGravityDown();
+        //player->setGravityDown();
+        levels[current_level]->setGravityDown(*player);
     }
     else if (input.wasKeyPressed(sf::Keyboard::L))
     {
-        player->setGravityRight();
+        //player->setGravityRight();
+        levels[current_level]->setGravityRight(*player);
     }
     else if (input.wasKeyPressed(sf::Keyboard::I))
     {
-        player->setGravityUp();
+        //player->setGravityUp();
+        levels[current_level]->setGravityUp(*player);
     }
 
 }
@@ -167,10 +178,14 @@ void Game::draw()
     graphics->clear();
     levels[current_level]->draw(*graphics);
     player->draw(*graphics);
-    //player->drawCollision(*graphics);
     if (state == WON)
     {
         graphics->winMessage(50, 50);
+    }
+    if (debug)
+    {
+        player->drawCollision(*graphics);
+        graphics->debugInfo(*player->getPosition(), levels[current_level]->getGravity());
     }
     graphics->display();
 }
@@ -209,6 +224,18 @@ void Game::eventLoop()
                     if (input.wasKeyPressed(sf::Keyboard::R))
                     {
                         player->respawn();
+                    }
+                    if (input.wasKeyPressed(sf::Keyboard::Tilde))
+                    {
+                        debug = !debug;
+                    }
+                    if (input.wasKeyPressed(sf::Keyboard::Num2))
+                    {
+                        loadNextLevel();
+                    }
+                    if (input.wasKeyPressed(sf::Keyboard::Num1))
+                    {
+                        loadLevel(current_level-1);
                     }
                     break;
 

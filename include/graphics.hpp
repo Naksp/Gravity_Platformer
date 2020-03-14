@@ -21,6 +21,8 @@ class Graphics
         void display();
 
         void winMessage(int x, int y);
+        //void debugInfo(Player &player, Level &level);
+        void debugInfo(sf::Vector2f &pos, int grav);
 
     public:
         // Window object
@@ -36,6 +38,8 @@ class Graphics
 
         sf::Text win_message;
         sf::Font font;
+
+        sf::Text debug_text;
 
 };
 

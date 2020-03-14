@@ -36,11 +36,14 @@ class Player
         void stopJump();
 
         void setSpawn(sf::Vector2f &spawn);
+        void setSpawn(int x, int y);
         void respawn();
 
         // Set position of Player
         void setPosition(float x, float y);
         void setPosition(sf::Vector2f &vec);
+
+        sf::Vector2f* getPosition() const;
 
         void setRotation(float angle);
 
@@ -82,6 +85,7 @@ class Player
          */
         void updateY2(sf::Time time, Map &map);
 
+
     // Private variables
     private:
         sf::Vector2f *spawn_point;
@@ -89,7 +93,7 @@ class Player
         // Player state
         enum Motion {STANDING, WALKING, JUMPING, FALLING};
         enum Facing {BACK, FRONT};
-        enum Gravity {LEFT, RIGHT, UP, DOWN};
+        enum Gravity {UP, DOWN, LEFT, RIGHT};
         //enum Facing {LEFT, RIGHT, STILL};
 
         // State struct for defining movement
