@@ -11,7 +11,7 @@ struct Game
 {
     public:
         // Constructor
-        Game();
+        Game(uint start_level);
 
         // Desctructor
         ~Game();
@@ -20,7 +20,7 @@ struct Game
         void initPlayer();
         void initPlayer(int x_pos, int y_pos);
 
-        void initLevels();
+        void initLevels(uint start_level);
 
         void loadNextLevel();
         void loadLevel(int level);

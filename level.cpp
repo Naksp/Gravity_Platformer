@@ -3,6 +3,7 @@
 #include <sstream>
 #include <iostream>
 
+#include "./include/Game.hpp"
 #include "./include/HorizGravBlock.hpp"
 #include "./include/Level.hpp"
 #include "./include/Orb.hpp"
@@ -31,7 +32,7 @@ Level::Level(const std::string level_path, Player &player, Graphics &graphics)
             {
                 // Create new map
                 std::getline(level_file, line);
-                map = Map::loadMapFile(line, *h_grav_blocks, graphics);
+                map = Map::loadMapFile(line, graphics);
 
                 map_load = true;
             }
@@ -64,6 +65,17 @@ Level::Level(const std::string level_path, Player &player, Graphics &graphics)
 
                 orb_load = true;
             }
+            else if (line.compare("[HGBLOCKS]") == 0)
+            {
+                int x, y;
+                std::getline(level_file, line);
+
+                std::stringstream line_stream(line);
+                line_stream >> x >> y;
+
+                h_grav_blocks->push_back(new HorizGravBlock(x * Game::tile_size, y * Game::tile_size));
+            }
+            // Set initial gravity
             else if (line.compare("[GRAVITY]") == 0)
             {
                 int grav;
@@ -90,18 +102,20 @@ Level::Level(const std::string level_path, Player &player, Graphics &graphics)
                 }
             }
         }
+
+        // Check if anything failed
+        if (!map_load)
+        {
+            std::cerr << "ERROR: Failed to load map!" << std::endl;
+        }
+        if (!orb_load)
+        {
+            std::cerr << "ERROR: Failed to create orb!" << std::endl;
+        }
     }
     else
     {
         std::cerr << "ERROR: Failed to open " << level_path << "!" << std::endl;
-    }
-    if (!map_load)
-    {
-        std::cerr << "ERROR: Failed to load map!" << std::endl;
-    }
-    if (!orb_load)
-    {
-        std::cerr << "ERROR: Failed to create orb!" << std::endl;
     }
 
     level_file.close();
@@ -198,7 +212,7 @@ int Level::update(Player &player, sf::Time time)
     // TODO add collision detection
     for (uint i = 0; i < h_grav_blocks->size(); i++)
     {
-        h_grav_blocks->at(i)->update(time);
+        h_grav_blocks->at(i)->update(time, *map);
     }
     
     return 0;
@@ -213,4 +227,9 @@ void Level::draw(Graphics &graphics)
     }
     orb->draw(graphics);
     //std::cout << orb->getRect()->left << "," << orb->getRect()->top << std::endl;
+}
+
+void Level::checkMapCollision(sf::IntRect &rect, Map &map)
+{
+
 }

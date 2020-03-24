@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "GravityObject.hpp"
+#include "Map.hpp"
 
 class HorizGravBlock : public GravityObject
 {
@@ -13,12 +14,16 @@ class HorizGravBlock : public GravityObject
 
         void setPosition(int x, int y);
         void setPosition(sf::Vector2f &vec);
-        void update(sf::Time);
+        void update(sf::Time time, Map &map);
         void draw(Graphics &graphics) const;
 
         void startMovingLeft();
         void startMovingRight();
         void stopMoving();
+
+    private:
+        sf::IntRect leftCollision(int delta) const;
+        sf::IntRect rightCollision(int delta) const;
 
     private:
         sf::Texture texture;

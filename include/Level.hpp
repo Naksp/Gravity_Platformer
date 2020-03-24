@@ -31,6 +31,9 @@ class Level
 
         void draw(Graphics &graphics);
 
+    private:
+        void checkMapCollision(sf::IntRect &rect, Map &map);
+
     public:
         enum Gravity {UP, DOWN, LEFT, RIGHT};
 

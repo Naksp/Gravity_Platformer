@@ -4,7 +4,7 @@
 #include <boost/shared_array.hpp>
 #include <vector>
 
-#include "HorizGravBlock.hpp"
+//#include "HorizGravBlock.hpp"
 #include "MapRect.hpp"
 
 class Map
@@ -24,12 +24,23 @@ class Map
             int row, col;
             TileType tile_type;
         };
-
-        static Map* createTestMap(Graphics &graphics);
         
-        static Map* loadMapFile(const std::string file_path, std::vector<HorizGravBlock*> &grav_boxes, Graphics &graphics);
+        static Map* loadMapFile(const std::string file_path, Graphics &graphics);
 
-        //std::vector<CollisionTile> getCollidingTiles(const sf::IntRect &rect) const;
+        /**
+         * Checks for collisions between IntRect and map tiles
+         * 
+         * @param rect  Collision rect of object to check for collisions
+         * @return Vector of tiles rect if colliding with
+         */
+        std::vector<CollisionTile> getCollidingTiles(const sf::IntRect &rect) const;
+
+        /**
+         * Checks for collisions between MapRect and map tiles
+         * 
+         * @param rect  Collision rect of object to check for collisions
+         * @return Vector of tiles rect if colliding with
+         */
         std::vector<CollisionTile> getCollidingTiles(const MapRect &rect) const;
 
         //void update(int elapsed_time);

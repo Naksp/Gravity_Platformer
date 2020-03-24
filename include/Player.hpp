@@ -139,7 +139,6 @@ class Player
 
         // Collision functions
         MapRect leftCollision(int delta) const;
-        MapRect leftCollision2(int delta) const;
         MapRect rightCollision(int delta) const;
         MapRect topCollision(int delta) const;
         MapRect bottomCollision(int delta) const;

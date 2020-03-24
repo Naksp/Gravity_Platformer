@@ -12,7 +12,7 @@
 
 
 // Constructor
-Game::Game()
+Game::Game(uint start_level)
 {
     debug = false;
 
@@ -25,7 +25,7 @@ Game::Game()
     initPlayer();
 
     // Set up levels
-    initLevels();
+    initLevels(start_level);
 
     // Start Event Loop
     eventLoop();
@@ -48,7 +48,7 @@ void Game::initPlayer(int x_pos, int y_pos)
     player = new Player(x_pos, y_pos, *graphics);
 }
 
-void Game::initLevels()
+void Game::initLevels(uint start_level)
 {
     std::fstream level_list_file;
     level_list_file.open("./levels/level_list");
@@ -63,7 +63,7 @@ void Game::initLevels()
         }
     }
 
-    current_level = 0;
+    current_level = start_level;
 }
 
 void Game::loadNextLevel()
@@ -186,6 +186,8 @@ void Game::draw()
     }
     if (debug)
     {
+        // TODO include velocity and accel, player fall speed doesn't match block speed
+        // TODO make debug class to output extraneous messages
         player->drawCollision(*graphics);
         graphics->debugInfo(*player->getPosition(), levels[current_level]->getGravity());
     }
@@ -203,6 +205,8 @@ void Game::eventLoop()
 
     sf::sleep(sf::milliseconds(16));
 
+    // Game "starts" here
+    loadLevel(current_level);
     state = RUNNING;
 
     // Event Loop

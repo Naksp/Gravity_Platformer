@@ -17,7 +17,7 @@ Graphics::Graphics(int width, int height, int frame_rate, const std::string &hea
     window = new sf::RenderWindow(sf::VideoMode(width, height), header);
     window->setFramerateLimit(frame_rate);
 
-    view = new sf::View(sf::Vector2f(160, 120), sf::Vector2f(320, 240));
+    view = new sf::View(sf::Vector2f(160, 120), sf::Vector2f(352, 272));
     window->setView(*view);
 
     if (!font.loadFromFile("./fonts/Rubik-Medium.ttf"))
