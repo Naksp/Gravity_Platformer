@@ -8,7 +8,7 @@ OBJS := $(patsubst %.cpp, $(BUILD_DIR)/%.o, $(SRCS))
 
 simple_platformer: $(OBJS)
 	g++ -o $(BUILD_DIR)/simple_platformer $(OBJS) $(SFML_FLAGS) 
-	@echo "Make Successful!"
+	@echo "Make Finished Successfully"
 
 $(BUILD_DIR)/%.o: %.cpp
 	g++ -o $@ -c $< $(CXXFLAGS)

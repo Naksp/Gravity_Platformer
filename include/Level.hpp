@@ -12,7 +12,7 @@
 class Level
 {
     public:
-        Level(const std::string level_path, Player &player, Graphics &graphics);
+        Level(const std::string level_path, int level_num, Player &player, Graphics &graphics);
         ~Level();
 
         Map* getMap();
@@ -38,6 +38,7 @@ class Level
         enum Gravity {UP, DOWN, LEFT, RIGHT};
 
     private:
+        const int level_num;
         Map* map;
         std::vector<sf::Texture> textures;
 

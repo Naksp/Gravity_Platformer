@@ -6,13 +6,15 @@
 #include "./include/Game.hpp"
 #include "./include/HorizGravBlock.hpp"
 #include "./include/Level.hpp"
+#include "./include/MapRect.hpp"
 #include "./include/Orb.hpp"
 #include "./include/Player.hpp"
 
-Level::Level(const std::string level_path, Player &player, Graphics &graphics)
+Level::Level(const std::string level_path, int level_num, Player &player, Graphics &graphics) :
+    level_num(level_num)
 {
     std::cout << "--------------------------------------------" << std::endl;
-    std::cout << "Loading level from " << level_path << "..." << std::endl;
+    std::cout << "Loading level " << level_num << " from " << level_path << "..." << std::endl;
 
     h_grav_blocks = new std::vector<HorizGravBlock*>();
 
@@ -205,14 +207,25 @@ void Level::start(Player &player)
 
 int Level::update(Player &player, sf::Time time)
 {
-    if (player.getRect()->intersects(*orb->getRect()))
-    {
-        return 1;
-    }
-    // TODO add collision detection
+    player.update(time, *map);
+    //std::vector<MapRect>* player_collision = player.getCollisionRects();
+    //std::vector<boost::shared_ptr<MapRect>> player_collision = player.getCollisionRects();
+
+    // Update grav blocks and check map collision
     for (uint i = 0; i < h_grav_blocks->size(); i++)
     {
         h_grav_blocks->at(i)->update(time, *map);
+
+        // Check top collision
+        if (player.getRect()->intersects(*h_grav_blocks->at(i)->getRect()))
+        {
+            std::cout << "COLLISION" << std::endl;
+        }
+    }
+    // Check if level is won
+    if (player.getRect()->intersects(*orb->getRect()))
+    {
+        return 1;
     }
     
     return 0;
@@ -226,7 +239,6 @@ void Level::draw(Graphics &graphics)
         h_grav_blocks->at(i)->draw(graphics);
     }
     orb->draw(graphics);
-    //std::cout << orb->getRect()->left << "," << orb->getRect()->top << std::endl;
 }
 
 void Level::checkMapCollision(sf::IntRect &rect, Map &map)

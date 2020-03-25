@@ -45,12 +45,24 @@ class Player
 
         sf::Vector2f* getPosition() const;
 
+        /**
+         * Sets rotation of sprite, adjusting offset to keep same position
+         * 
+         * @param angle Angle of target rotation
+         */
         void setRotation(float angle);
 
         void draw(Graphics &graphics);
         void drawCollision(Graphics &graphics);
 
         sf::IntRect* getRect();
+
+        /**
+         * Gets collision rects (delta rects) of player for current update cycle
+         * 
+         * @return Vector of IntRects. Order is: { left, right, bottom, top }
+         */
+        std::vector<boost::shared_ptr<MapRect>> getCollisionRects();
 
     private:
         /**
@@ -159,6 +171,8 @@ class Player
         sf::Vector2f *velocity;
         sf::Vector2f *acceleration;
         bool on_ground;
+
+        int frame_delta_x, frame_delta_y;
 
         // Sprite map
         std::map<SpriteState, boost::shared_ptr<AnimatedSprite> > sprites;

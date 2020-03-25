@@ -44,6 +44,11 @@ int MapRect::height() const
     return int_rect->height;
 }
 
+const sf::IntRect* MapRect::getRect()
+{
+    return int_rect;
+}
+
 sf::RectangleShape MapRect::toRectangle(sf::Color outlineColor) const
 {
     sf::RectangleShape rectangle;

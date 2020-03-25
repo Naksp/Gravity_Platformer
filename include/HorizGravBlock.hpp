@@ -21,6 +21,8 @@ class HorizGravBlock : public GravityObject
         void startMovingRight();
         void stopMoving();
 
+        sf::IntRect* getRect() { return rect; };
+
     private:
         sf::IntRect leftCollision(int delta) const;
         sf::IntRect rightCollision(int delta) const;

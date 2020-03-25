@@ -55,11 +55,12 @@ void Game::initLevels(uint start_level)
 
     if (level_list_file.is_open())
     {
-
+        int level_num = 0;
         std::string level_path;
         while (std::getline(level_list_file, level_path))
         {
-            levels.push_back(new Level(level_path, *player, *graphics));
+            levels.push_back(new Level(level_path, level_num, *player, *graphics));
+            level_num++;
         }
     }
 
@@ -167,7 +168,7 @@ void Game::update(sf::Time frameTime)
     // TODO: Change this value back
     //sf::Time testTime = sf::milliseconds(16);
     //player->update(testTime, *map);
-    player->update(frameTime, *levels[current_level]->getMap());
+    //player->update(frameTime, *levels[current_level]->getMap());
     if (levels[current_level]->update(*player, frameTime))
     {
         state = WON;

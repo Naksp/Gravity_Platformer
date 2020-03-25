@@ -17,6 +17,8 @@ struct MapRect : public sf::IntRect
         int width() const;
         int height() const;
 
+        const sf::IntRect* getRect();
+
         sf::RectangleShape toRectangle(sf::Color outlineColor) const;
 
     private:

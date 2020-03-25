@@ -318,6 +318,47 @@ sf::IntRect* Player::getRect()
     return rect;
 }
 
+/*
+std::vector<boost::shared_ptr<MapRect>> Player::getCollisionRects()
+{
+    std::vector<boost::shared_ptr<MapRect>> rects;// = new std::vector<MapRect*>();
+    
+
+    // Get left, right collision rects
+    if (frame_delta_x > 0)
+    {
+        rects.push_back(boost::shared_ptr<MapRect>(&leftCollision(0)));
+        rects.push_back(boost::shared_ptr<MapRect>(&rightCollision(frame_delta_x)));
+        //rects.push_back(rightCollision(frame_delta_x));
+    }
+    else 
+    {
+        rects.push_back(boost::shared_ptr<MapRect>(&leftCollision(frame_delta_x)));
+        rects.push_back(boost::shared_ptr<MapRect>(&rightCollision(0)));
+        //rects->push_back(leftCollision(frame_delta_x));
+        //rects->push_back(rightCollision(0));
+    }
+
+    // Get bottom, top collision rects
+    if (frame_delta_y > 0)
+    {
+        rects.push_back(boost::shared_ptr<MapRect>(&bottomCollision(frame_delta_y)));
+        rects.push_back(boost::shared_ptr<MapRect>(&topCollision(0)));
+        //rects->push_back(bottomCollision(frame_delta_y));
+        //rects->push_back(topCollision(0));
+    }
+    else
+    {
+        rects.push_back(boost::shared_ptr<MapRect>(&bottomCollision(0)));
+        rects.push_back(boost::shared_ptr<MapRect>(&topCollision(frame_delta_y)));
+        //rects->push_back(bottomCollision(0));
+        //rects->push_back(topCollision(frame_delta_y));
+    }
+
+    return rects;
+}
+*/
+
 // Initialize Player sprites
 void Player::initSprites(Graphics &graphics)
 {
@@ -460,6 +501,8 @@ void Player::updateX(sf::Time time, Map &map)
             position->x = data.col * Game::tile_size - collision_x.right();
         }
     }
+
+    frame_delta_x = delta;
 }
 
 void Player::updateY(sf::Time time, Map &map)
@@ -542,6 +585,7 @@ void Player::updateY(sf::Time time, Map &map)
         }
         
     }
+    frame_delta_y = delta;
 }
 
 void Player::updateX2(sf::Time time, Map &map)
@@ -549,7 +593,14 @@ void Player::updateX2(sf::Time time, Map &map)
     // If jump is expired, set fall velocity
     if (!jump.active())
     {
-        velocity->x = std::min(velocity->x + (g_sign * gravity_val * time.asMilliseconds()), max_fall_speed);
+        if (gravity == RIGHT)
+        {
+            velocity->x = std::min(velocity->x + (g_sign * gravity_val * time.asMilliseconds()), max_fall_speed);
+        }
+        else
+        {
+            velocity->x = std::max(velocity->x + (g_sign * gravity_val * time.asMilliseconds()), -max_fall_speed);
+        }
     }
 
     const int delta = (int) round(velocity->x * time.asMilliseconds());
@@ -615,6 +666,8 @@ void Player::updateX2(sf::Time time, Map &map)
             position->x = data.col * Game::tile_size - collision_x.right();
         }
     }
+
+    frame_delta_x = delta;
 }
 
 void Player::updateY2(sf::Time time, Map &map)
@@ -683,6 +736,8 @@ void Player::updateY2(sf::Time time, Map &map)
             position->y = data.row * Game::tile_size - collision_y.bottom();
         }
     }
+
+    frame_delta_y = delta;
 }
 
 bool operator<(const Player::SpriteState &a, const Player::SpriteState &b)
