@@ -187,10 +187,9 @@ void Game::draw()
     }
     if (debug)
     {
-        // TODO include velocity and accel, player fall speed doesn't match block speed
         // TODO make debug class to output extraneous messages
         player->drawCollision(*graphics);
-        graphics->debugInfo(*player->getPosition(), levels[current_level]->getGravity());
+        graphics->debugInfo(*player->getPosition(), *player->getVelocity(), levels[current_level]->getGravity());
     }
     graphics->display();
 }
@@ -230,7 +229,9 @@ void Game::eventLoop()
                     }
                     if (input.wasKeyPressed(sf::Keyboard::R))
                     {
-                        player->respawn();
+                        //player->respawn();
+                        // TODO Add object respawn
+                        loadLevel(current_level);
                     }
                     if (input.wasKeyPressed(sf::Keyboard::Tilde))
                     {

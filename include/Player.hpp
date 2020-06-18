@@ -44,6 +44,7 @@ class Player
         void setPosition(sf::Vector2f &vec);
 
         sf::Vector2f* getPosition() const;
+        sf::Vector2f* getVelocity() const;
 
         /**
          * Sets rotation of sprite, adjusting offset to keep same position
@@ -62,7 +63,11 @@ class Player
          * 
          * @return Vector of IntRects. Order is: { left, right, bottom, top }
          */
-        std::vector<boost::shared_ptr<MapRect>> getCollisionRects();
+        std::vector<sf::IntRect>* getCollisionRects();
+
+        void collideX();
+        void collideY();
+        void landOnGround();
 
     private:
         /**

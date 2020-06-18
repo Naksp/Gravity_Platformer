@@ -45,6 +45,7 @@ class Level
         Gravity gravity;
 
         sf::Vector2f *player_spawn;
+        std::vector<sf::IntRect>* player_collision;
     
         std::vector<HorizGravBlock*> *h_grav_blocks;
 

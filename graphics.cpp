@@ -75,18 +75,33 @@ void Graphics::winMessage(int x, int y)
     window->draw(win_message);
 }
 
-void Graphics::debugInfo(sf::Vector2f &pos, int grav)
+void Graphics::debugInfo(sf::Vector2f &pos, sf::Vector2f &vel, int grav)
 {
     std::string debug_message;
     std::string x_pos = std::to_string(pos.x);
     std::string y_pos = std::to_string(pos.y);
+    std::string x_vel = std::to_string(vel.x);
+    std::string y_vel = std::to_string(vel.y);
     std::string gravity = std::to_string(grav);
 
     debug_message = "Position:\t" + x_pos + ", " + y_pos + "\n" +
+                    "Velocity:\t" + x_vel + ", " + y_vel + "\n" +
                     "Gravity: " + gravity;
             
     debug_text.setString(debug_message);
     debug_text.setPosition(0, 0);
 
     window->draw(debug_text);
+}
+
+void Graphics::drawRect(sf::IntRect &rect, sf::Color color) const
+{
+    sf::RectangleShape rectangle;
+    rectangle.setSize(sf::Vector2f(rect.width, rect.height));
+    rectangle.setPosition(rect.left, rect.top);
+    rectangle.setOutlineColor(color);
+    rectangle.setOutlineThickness(1);
+    rectangle.setFillColor(sf::Color::Transparent);
+
+    window->draw(rectangle);
 }

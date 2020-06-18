@@ -277,6 +277,10 @@ sf::Vector2f* Player::getPosition() const
     return position;
 }
 
+sf::Vector2f* Player::getVelocity() const
+{
+    return velocity;
+}
 
 void Player::setRotation(float angle)
 {
@@ -318,46 +322,52 @@ sf::IntRect* Player::getRect()
     return rect;
 }
 
-/*
-std::vector<boost::shared_ptr<MapRect>> Player::getCollisionRects()
+std::vector<sf::IntRect>* Player::getCollisionRects()
 {
-    std::vector<boost::shared_ptr<MapRect>> rects;// = new std::vector<MapRect*>();
+    std::vector<sf::IntRect>* rects = new std::vector<sf::IntRect>();
     
 
     // Get left, right collision rects
     if (frame_delta_x > 0)
     {
-        rects.push_back(boost::shared_ptr<MapRect>(&leftCollision(0)));
-        rects.push_back(boost::shared_ptr<MapRect>(&rightCollision(frame_delta_x)));
-        //rects.push_back(rightCollision(frame_delta_x));
+        rects->push_back(*leftCollision(0).getRect());
+        rects->push_back(*rightCollision(frame_delta_x).getRect());
     }
     else 
     {
-        rects.push_back(boost::shared_ptr<MapRect>(&leftCollision(frame_delta_x)));
-        rects.push_back(boost::shared_ptr<MapRect>(&rightCollision(0)));
-        //rects->push_back(leftCollision(frame_delta_x));
-        //rects->push_back(rightCollision(0));
+        rects->push_back(*leftCollision(frame_delta_x).getRect());
+        rects->push_back(*rightCollision(0).getRect());
     }
 
     // Get bottom, top collision rects
     if (frame_delta_y > 0)
     {
-        rects.push_back(boost::shared_ptr<MapRect>(&bottomCollision(frame_delta_y)));
-        rects.push_back(boost::shared_ptr<MapRect>(&topCollision(0)));
-        //rects->push_back(bottomCollision(frame_delta_y));
-        //rects->push_back(topCollision(0));
+        rects->push_back(*bottomCollision(frame_delta_y).getRect());
+        rects->push_back(*topCollision(0).getRect());
     }
     else
     {
-        rects.push_back(boost::shared_ptr<MapRect>(&bottomCollision(0)));
-        rects.push_back(boost::shared_ptr<MapRect>(&topCollision(frame_delta_y)));
-        //rects->push_back(bottomCollision(0));
-        //rects->push_back(topCollision(frame_delta_y));
+        rects->push_back(*bottomCollision(0).getRect());
+        rects->push_back(*topCollision(frame_delta_y).getRect());
     }
 
     return rects;
 }
-*/
+
+void Player::collideX()
+{
+    velocity->x = 0;
+}
+
+void Player::collideY()
+{
+    velocity->y = 0;
+}
+
+void Player::landOnGround()
+{
+    on_ground = true;
+}
 
 // Initialize Player sprites
 void Player::initSprites(Graphics &graphics)

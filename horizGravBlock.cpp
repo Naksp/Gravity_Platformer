@@ -89,6 +89,19 @@ void HorizGravBlock::setPosition(sf::Vector2f &vec)
 void HorizGravBlock::update(sf::Time time, Map &map)
 {
     velocity->x += acceleration->x * time.asMilliseconds();
+
+    if (acceleration->x < 0.0f)
+    {
+        velocity->x = std::max(velocity->x, -max_speed);
+    }
+    else if (acceleration->x > 0.0f)
+    {
+        velocity->x = std::min(velocity->x, max_speed);
+    }
+    else
+    {
+        velocity->x *= slowdown_factor;
+    }
     
     const int delta = (int) round(velocity->x * time.asMilliseconds());
 
@@ -103,8 +116,7 @@ void HorizGravBlock::update(sf::Time time, Map &map)
         }
         else
         {
-            velocity->x = std::max(velocity->x, -max_speed);
-            position->x += std::round(velocity->x * time.asMilliseconds());
+            position->x += delta;
         }
     }
     else if (delta > 0.0f)
@@ -117,24 +129,19 @@ void HorizGravBlock::update(sf::Time time, Map &map)
         }
         else
         {
-            velocity->x = std::min(velocity->x, max_speed);
-            position->x += std::round(velocity->x * time.asMilliseconds());
+            position->x += delta;
         }
     }
-    else
-    {
-        velocity->x *= slowdown_factor;
-    }
-
-    //position->x += std::round(velocity->x * time.asMilliseconds());
 
     setPosition(*position);
+    //std::cout << velocity->x << ", " << velocity->y << std::endl;
     //std::cout << position->x << ", " << position->y << std::endl;
 }
 
 void HorizGravBlock::draw(Graphics &graphics) const
 {
     graphics.window->draw(*sprite);
+    //graphics.drawRect(*rect, sf::Color::Red);
 
     /*
     sf::RectangleShape rectangle;
