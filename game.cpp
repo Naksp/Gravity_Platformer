@@ -165,10 +165,6 @@ void Game::processInput(Input input)
 // Update game state
 void Game::update(sf::Time frameTime)
 {
-    // TODO: Change this value back
-    //sf::Time testTime = sf::milliseconds(16);
-    //player->update(testTime, *map);
-    //player->update(frameTime, *levels[current_level]->getMap());
     if (levels[current_level]->update(*player, frameTime))
     {
         state = WON;
@@ -185,7 +181,7 @@ void Game::draw()
     {
         graphics->winMessage(50, 50);
     }
-    if (debug)
+    if (graphics->debugState())
     {
         // TODO make debug class to output extraneous messages
         player->drawCollision(*graphics);
@@ -235,7 +231,8 @@ void Game::eventLoop()
                     }
                     if (input.wasKeyPressed(sf::Keyboard::Tilde))
                     {
-                        debug = !debug;
+                        //debug = !debug;
+                        graphics->toggleDebug();
                     }
                     if (input.wasKeyPressed(sf::Keyboard::Num2))
                     {
@@ -244,6 +241,11 @@ void Game::eventLoop()
                     if (input.wasKeyPressed(sf::Keyboard::Num1))
                     {
                         loadLevel(current_level-1);
+                    }
+                    //TODO Temporary
+                    if (input.wasKeyPressed(sf::Keyboard::BackSpace))
+                    {
+                        std::cout << player->debugSpriteState() << std::endl;
                     }
                     break;
 
@@ -266,4 +268,9 @@ void Game::eventLoop()
         update(frameTime);
         draw();
     }
+}
+
+bool Game::debugState() const
+{
+    return debug;
 }

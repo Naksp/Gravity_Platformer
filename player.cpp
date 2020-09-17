@@ -262,6 +262,7 @@ void Player::setPosition(float x, float y)
 {
     position->x = x;
     position->y = y;
+    sprites[getSpriteState()]->setPosition(*position);
 
 }
 
@@ -270,6 +271,7 @@ void Player::setPosition(sf::Vector2f &vec)
 {
     position->x = vec.x;
     position->y = vec.y;
+    sprites[getSpriteState()]->setPosition(*position);
 }
 
 sf::Vector2f* Player::getPosition() const
@@ -398,6 +400,36 @@ Player::SpriteState Player::getSpriteState()
     }
     
     return SpriteState(motion, facing);
+}
+
+std::string Player::debugSpriteState() const
+{
+    std::string state;
+    switch (motion)
+    {
+    case STANDING:
+        state = "STANDING";
+        break;
+    case JUMPING:
+        state = "JUMPING";
+        break;
+    case WALKING:
+        state = "WALKING";
+        break; 
+    default:
+        break;
+    }
+
+    if (facing == FRONT)
+    {
+        state += ", FRONT";
+    }
+    else 
+    {
+        state += ", BACK";
+    }
+
+    return state;
 }
 
 // Get left collision rectangle

@@ -67,7 +67,17 @@ class Player
 
         void collideX();
         void collideY();
+
+        /**
+         * Set player on_ground to true
+         * Used to correctly set player movement state
+         */
         void landOnGround();
+
+        /**
+         * For debugging spritestate
+         */
+        std::string debugSpriteState() const;
 
     private:
         /**
@@ -162,6 +172,10 @@ class Player
 
         sf::IntRect *rect;
 
+        /**
+         * Used to determine player movement state
+         * @return true if player in currently on ground
+         */
         bool onGround() const { return on_ground; }
 
         // Current facing

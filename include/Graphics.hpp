@@ -26,6 +26,13 @@ class Graphics
 
         void drawRect(sf::IntRect &rect, sf::Color color) const;
 
+        // Return debug state
+        bool debugState() const;
+
+        void setDebug(bool state);
+
+        void toggleDebug();
+
     public:
         // Window object
         sf::RenderWindow *window;
@@ -41,6 +48,8 @@ class Graphics
         sf::Text win_message;
         sf::Font font;
 
+        bool debug;
+         
         sf::Text debug_text;
 
 };

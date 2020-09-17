@@ -208,79 +208,11 @@ void Level::start(Player &player)
 int Level::update(Player &player, sf::Time time)
 {
     player.update(time, *map);
-    //std::vector<MapRect>* player_collision = player.getCollisionRects();
-    //std::vector<boost::shared_ptr<MapRect>> player_collision = player.getCollisionRects();
     player_collision = player.getCollisionRects();
 
-    //std::cout << player_collision->at(3).left << ", " << player_collision->at(3).top << std::endl;
-
-
     // Update grav blocks and check map collision
-    for (uint i = 0; i < h_grav_blocks->size(); i++)
-    {
-        HorizGravBlock* curr_block = h_grav_blocks->at(i);
-        //h_grav_blocks->at(i)->update(time, *map);
-        curr_block->update(time, *map);
-        for (uint j = 0; j < player_collision->size(); j++)
-        {
-            // Check for collisions
-            if (player_collision->at(j).intersects(*h_grav_blocks->at(i)->getRect()))
-            {
-                switch (j)
-                {
-                // Left Collision
-                case 0 :
-                    player.setPosition(curr_block->getRect()->left + curr_block->getRect()->width, player.getPosition()->y);
-                    player.collideX();
-                    if (gravity == LEFT || gravity == RIGHT)
-                    {
-                        player.landOnGround();
-                    }
-                    break;
-                // Right Collision
-                case 1 :
-                    player.setPosition(curr_block->getRect()->left - Game::tile_size, player.getPosition()->y);
-                    player.collideX();
-                    if (gravity == LEFT || gravity == RIGHT)
-                    {
-                        player.landOnGround();
-                    }
-                    break;
-                // Bottom collision
-                case 2 :
-                    player.setPosition(player.getPosition()->x, curr_block->getRect()->top - Game::tile_size);
-                    player.collideY();
-                    if (gravity == UP || gravity == DOWN)
-                    {
-                        player.landOnGround();
-                    }
-                    break;
-                case 3 :
-                    player.setPosition(player.getPosition()->x, curr_block->getRect()->top + Game::tile_size);
-                    player.collideY();
-                    if (gravity == UP || gravity == DOWN)
-                    {
-                        player.landOnGround();
-                    }
-                    break;
-                
-                default:
-                    break;
-                }
-            }
-        }
+    updateHGravBlocks(player, time);
 
-        // Check top collision
-        // Check right collision
-        // Check bottom collision
-        /*
-        if (player_collision->at(2).intersects(*h_grav_blocks->at(i)->getRect()))
-        {
-            player.setPosition(player.getPosition()->x, h_grav_blocks->at(i)->getRect()->top + Game::tile_size);
-            std::cout << "COLLISION" << std::endl;
-        }
-        */
-    }
     // Check if level is won
     if (player.getRect()->intersects(*orb->getRect()))
     {
@@ -296,15 +228,135 @@ void Level::draw(Graphics &graphics)
     for (uint i = 0; i < h_grav_blocks->size(); i++)
     {
         h_grav_blocks->at(i)->draw(graphics);
+        //graphics.drawRect(*h_grav_blocks->at(i)->getRect(), sf::Color::Magenta);
     }
     orb->draw(graphics);
+    if (graphics.debugState())
     for (uint i = 0; i < player_collision->size(); i++)
     {
         graphics.drawRect(player_collision->at(i), sf::Color::Green);
     }
 }
 
-void Level::checkMapCollision(sf::IntRect &rect, Map &map)
+void Level::updateHGravBlocks(Player &player, sf::Time time)
 {
+    for (uint i = 0; i < h_grav_blocks->size(); i++)
+    {
+        HorizGravBlock* curr_block = h_grav_blocks->at(i);
+        curr_block->update(time, *map);
 
+        // Check relative y collisions first, then relative x
+        if (gravity == UP || gravity == DOWN)
+        {
+            for (int j = player_collision->size() - 1; j >= 0; j--)
+            {
+                // Check for collisions
+                if (player_collision->at(j).intersects(*h_grav_blocks->at(i)->getRect()))
+                {
+                    switch (j)
+                    {
+                    // Left Collision
+                    case 0 :
+                        player.collideX();
+                        if (gravity == LEFT)
+                        {
+                            player.landOnGround();
+                        }
+                        player.setPosition(curr_block->getRect()->left + curr_block->getRect()->width, player.getPosition()->y);
+                        player_collision = player.getCollisionRects();
+                        break;
+                    // Right Collision
+                    case 1 :
+                        player.collideX();
+                        if (gravity == RIGHT)
+                        {
+                            player.landOnGround();
+                        }
+                        player.setPosition(curr_block->getRect()->left - Game::tile_size, player.getPosition()->y);
+                        player_collision = player.getCollisionRects();
+                        break;
+                    // Bottom collision
+                    case 2 :
+                        player.collideY();
+                        if (gravity == DOWN)
+                        {
+                            player.landOnGround();
+                        }
+                        player.setPosition(player.getPosition()->x, curr_block->getRect()->top - Game::tile_size);
+                        player_collision = player.getCollisionRects();
+                        break;
+                    // Top collision
+                    case 3 :
+                        player.collideY();
+                        if (gravity == UP)
+                        {
+                            player.landOnGround();
+                        }
+                        player.setPosition(player.getPosition()->x, curr_block->getRect()->top + Game::tile_size);
+                        player_collision = player.getCollisionRects();
+                        break;
+                    
+                    default:
+                        break;
+                    }
+                }
+            }
+
+        }
+        else
+        {
+            for (uint j = 0; j < player_collision->size(); j++)
+            {
+                // Check for collisions
+                if (player_collision->at(j).intersects(*h_grav_blocks->at(i)->getRect()))
+                {
+                    switch (j)
+                    {
+                    // Left Collision
+                    case 0 :
+                        player.collideX();
+                        if (gravity == LEFT)
+                        {
+                            player.landOnGround();
+                        }
+                        player.setPosition(curr_block->getRect()->left + curr_block->getRect()->width, player.getPosition()->y);
+                        player_collision = player.getCollisionRects();
+                        break;
+                    // Right Collision
+                    case 1 :
+                        player.collideX();
+                        if (gravity == RIGHT)
+                        {
+                            player.landOnGround();
+                        }
+                        player.setPosition(curr_block->getRect()->left - Game::tile_size, player.getPosition()->y);
+                        player_collision = player.getCollisionRects();
+                        break;
+                    // Bottom collision
+                    case 2 :
+                        player.collideY();
+                        if (gravity == DOWN)
+                        {
+                            player.landOnGround();
+                        }
+                        player.setPosition(player.getPosition()->x, curr_block->getRect()->top - Game::tile_size);
+                        player_collision = player.getCollisionRects();
+                        break;
+                    case 3 :
+                        player.collideY();
+                        if (gravity == UP)
+                        {
+                            player.landOnGround();
+                        }
+                        player.setPosition(player.getPosition()->x, curr_block->getRect()->top + Game::tile_size);
+                        player_collision = player.getCollisionRects();
+                        break;
+                    
+                    default:
+                        break;
+                    }
+                }
+            }
+        }
+    }
 }

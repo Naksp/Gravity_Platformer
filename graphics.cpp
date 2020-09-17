@@ -94,6 +94,21 @@ void Graphics::debugInfo(sf::Vector2f &pos, sf::Vector2f &vel, int grav)
     window->draw(debug_text);
 }
 
+void Graphics::setDebug(bool state)
+{
+    debug = state;
+}
+
+void Graphics::toggleDebug()
+{
+    debug = !debug;
+}
+
+bool Graphics::debugState() const
+{
+    return debug;
+}
+
 void Graphics::drawRect(sf::IntRect &rect, sf::Color color) const
 {
     sf::RectangleShape rectangle;

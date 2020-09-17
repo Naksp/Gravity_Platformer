@@ -37,6 +37,9 @@ struct Game
         // Main event loop for game
         void eventLoop();
 
+        // Return debug state
+        bool debugState() const;
+
     public:
         static const int tile_size = 16;
         static constexpr float gravity_acc = 0.002f;

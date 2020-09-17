@@ -51,7 +51,7 @@ HorizGravBlock::HorizGravBlock(int x, int y)
     acceleration = new sf::Vector2f(0.f, 0.f);
 
     // Set collision rect and initial position
-    rect = new sf::IntRect(x, y, 16, 16);
+    rect = new sf::IntRect(x, y, 16, 15);
     setPosition(x, y);
 }
 
@@ -141,18 +141,6 @@ void HorizGravBlock::update(sf::Time time, Map &map)
 void HorizGravBlock::draw(Graphics &graphics) const
 {
     graphics.window->draw(*sprite);
-    //graphics.drawRect(*rect, sf::Color::Red);
-
-    /*
-    sf::RectangleShape rectangle;
-    rectangle.setSize(sf::Vector2f(rect->width, rect->height));
-    rectangle.setPosition(*position);
-    rectangle.setOutlineColor(sf::Color::Red);
-    rectangle.setOutlineThickness(1);
-    rectangle.setFillColor(sf::Color::Transparent);
-    
-    graphics.window->draw(rectangle);
-    */
 }
 
 void HorizGravBlock::startMovingLeft()
