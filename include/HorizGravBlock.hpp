@@ -17,6 +17,8 @@ class HorizGravBlock : public GravityObject
         void update(sf::Time time, Map &map);
         void draw(Graphics &graphics) const;
 
+        void startMovingUp();
+        void startMovingDown();
         void startMovingLeft();
         void startMovingRight();
         void stopMoving();

@@ -19,6 +19,8 @@ class VertGravBlock : public GravityObject
 
         void startMovingUp();
         void startMovingDown();
+        void startMovingLeft();
+        void startMovingRight();
         void stopMoving();
 
         sf::IntRect* getRect() { return rect; };

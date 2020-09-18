@@ -34,7 +34,9 @@ class Level
         void draw(Graphics &graphics);
 
     private:
-        void updateHGravBlocks(Player &player, sf::Time time);
+        //void updateHGravBlocks(Player &player, sf::Time time);
+
+        void updateGravBlocks(Player &player, sf::Time time);
 
     public:
         enum Gravity {UP, DOWN, LEFT, RIGHT};
@@ -49,10 +51,12 @@ class Level
         sf::Vector2f *player_spawn;
         std::vector<sf::IntRect>* player_collision;
     
-        std::vector<HorizGravBlock*> *h_grav_blocks;
-        std::vector<VertGravBlock*> *v_grav_blocks;
+        //std::vector<HorizGravBlock*> *h_grav_blocks;
+        //std::vector<VertGravBlock*> *v_grav_blocks;
 
-        std::vector<GravityObject*> *grav_objects;
+        std::vector<std::unique_ptr<GravityObject>> *grav_objects;
+        //std::unique_ptr<GravityObject> g_block;
+        GravityObject* g_block;
 
         Orb *orb;
 };

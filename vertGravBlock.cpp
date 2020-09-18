@@ -149,10 +149,21 @@ void VertGravBlock::startMovingDown()
     acceleration->y = Game::gravity_acc;
 }
 
+void VertGravBlock::startMovingLeft()
+{
+    stopMoving();
+}
+
+void VertGravBlock::startMovingRight()
+{
+    stopMoving();
+}
+
 void VertGravBlock::stopMoving()
 {
     acceleration->y = 0.0f;
 }
+
 
 sf::IntRect VertGravBlock::topCollision(int delta) const
 {

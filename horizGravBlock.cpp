@@ -143,6 +143,16 @@ void HorizGravBlock::draw(Graphics &graphics) const
     graphics.window->draw(*sprite);
 }
 
+void HorizGravBlock::startMovingUp()
+{
+    stopMoving();
+}
+
+void HorizGravBlock::startMovingDown()
+{
+    stopMoving();
+}
+
 void HorizGravBlock::startMovingLeft()
 {
     acceleration->x = -Game::gravity_acc;

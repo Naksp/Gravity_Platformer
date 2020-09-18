@@ -1,6 +1,6 @@
 BUILD_DIR=build
 
-CXXFLAGS := -Wall -g -std=c++11
+CXXFLAGS := -Wall -g -std=c++17
 SFML_FLAGS := -lsfml-graphics -lsfml-window -lsfml-system
 
 SRCS := $(wildcard *.cpp)
