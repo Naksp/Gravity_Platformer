@@ -8,6 +8,8 @@
 #include "Map.hpp"
 #include "Orb.hpp"
 #include "Player.hpp"
+#include "VertGravBlock.hpp"
+#include "GravityObject.hpp"
 
 class Level
 {
@@ -48,6 +50,9 @@ class Level
         std::vector<sf::IntRect>* player_collision;
     
         std::vector<HorizGravBlock*> *h_grav_blocks;
+        std::vector<VertGravBlock*> *v_grav_blocks;
+
+        std::vector<GravityObject*> *grav_objects;
 
         Orb *orb;
 };

@@ -9,6 +9,7 @@
 #include "./include/MapRect.hpp"
 #include "./include/Orb.hpp"
 #include "./include/Player.hpp"
+#include "./include/VertGravBlock.hpp"
 
 Level::Level(const std::string level_path, int level_num, Player &player, Graphics &graphics) :
     level_num(level_num)
@@ -17,6 +18,7 @@ Level::Level(const std::string level_path, int level_num, Player &player, Graphi
     std::cout << "Loading level " << level_num << " from " << level_path << "..." << std::endl;
 
     h_grav_blocks = new std::vector<HorizGravBlock*>();
+    v_grav_blocks = new std::vector<VertGravBlock*>();
 
     // Open file stream
     std::ifstream level_file;
@@ -75,7 +77,19 @@ Level::Level(const std::string level_path, int level_num, Player &player, Graphi
                 std::stringstream line_stream(line);
                 line_stream >> x >> y;
 
+                //grav_objects->push_back(new HorizGravBlock(x * Game::tile_size, y * Game::tile_size));
                 h_grav_blocks->push_back(new HorizGravBlock(x * Game::tile_size, y * Game::tile_size));
+            }
+            else if (line.compare("[VGBLOCKS]") == 0)
+            {
+                int x, y;
+                std::getline(level_file, line);
+
+                std::stringstream line_stream(line);
+                line_stream >> x >> y;
+
+
+                v_grav_blocks->push_back(new VertGravBlock(x * Game::tile_size, y * Game::tile_size));
             }
             // Set initial gravity
             else if (line.compare("[GRAVITY]") == 0)
@@ -229,6 +243,10 @@ void Level::draw(Graphics &graphics)
     {
         h_grav_blocks->at(i)->draw(graphics);
         //graphics.drawRect(*h_grav_blocks->at(i)->getRect(), sf::Color::Magenta);
+    }
+    for (uint i = 0; i < v_grav_blocks->size(); i++)
+    {
+        v_grav_blocks->at(i)->draw(graphics);
     }
     orb->draw(graphics);
     if (graphics.debugState())

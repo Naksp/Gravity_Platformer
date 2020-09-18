@@ -1,0 +1,14 @@
+[MAP]
+./maps/map_3
+
+[PLAYER]
+16 208
+
+[ORB]
+208 208
+
+[VGBLOCKS]
+2 11
+
+[GRAVITY]
+2

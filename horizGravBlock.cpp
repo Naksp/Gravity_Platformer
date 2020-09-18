@@ -42,7 +42,7 @@ namespace
 
 HorizGravBlock::HorizGravBlock(int x, int y)
 {
-    texture.loadFromFile("./resources/grav_box.png");
+    texture.loadFromFile("./resources/h_grav_block.png");
 
     sprite = new sf::Sprite(texture);
 
