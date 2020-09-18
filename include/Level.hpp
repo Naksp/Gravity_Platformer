@@ -34,11 +34,10 @@ class Level
         void draw(Graphics &graphics);
 
     private:
-        //void updateHGravBlocks(Player &player, sf::Time time);
-
         void updateGravBlocks(Player &player, sf::Time time);
 
     public:
+        // UP = 0, DOWN = 1, LEFT = 2, RIGHT = 3
         enum Gravity {UP, DOWN, LEFT, RIGHT};
 
     private:
@@ -46,17 +45,16 @@ class Level
         Map* map;
         std::vector<sf::Texture> textures;
 
+        // Current gravity direction
         Gravity gravity;
 
         sf::Vector2f *player_spawn;
+
+        // Player collision rect
         std::vector<sf::IntRect>* player_collision;
     
-        //std::vector<HorizGravBlock*> *h_grav_blocks;
-        //std::vector<VertGravBlock*> *v_grav_blocks;
-
+        // Vector of all GravObjects in level
         std::vector<std::unique_ptr<GravityObject>> *grav_objects;
-        //std::unique_ptr<GravityObject> g_block;
-        GravityObject* g_block;
 
         Orb *orb;
 };

@@ -12,15 +12,15 @@ namespace
     // Walking constants
     const float slowDownFactor = 0.85f; // (original 0.8f)
     const float walkingAcceleration = 0.0012f; // (pixels / ms) / ms (original 0.0012f)
-    const float maxSpeedX = 0.250f; // pixels / ms (original 0.325f)
+    const float maxSpeedX = 0.175f; // pixels / ms (original 0.325f)
 
     // Gravity constants
-    const float gravity_val = 0.002f;
-    const float max_fall_speed = 0.6f;
+    //const float gravity_val = 0.002f;
+    const float max_fall_speed = 0.4f;
 
     // Jump constants
-    const float jump_speed = 0.22f;
-    const float jump_time = 125;
+    const float jump_speed = 0.18f;
+    const float jump_time = 200;
     const int jump_frame = 5;
     const int fall_frame = 1;
 
@@ -301,14 +301,16 @@ void Player::draw(Graphics &graphics)
 void Player::drawCollision(Graphics &graphics)
 {
     sf::RectangleShape x_rectangle = collision_x.toRectangle(sf::Color::Blue);
-    sf::RectangleShape y_rectangle = collision_y.toRectangle(sf::Color::Green);
+    sf::RectangleShape y_rectangle = collision_y.toRectangle(sf::Color::Blue);
 
+    /*
     sf::RectangleShape rect_rectangle;
     rect_rectangle.setSize(sf::Vector2f(16, 16));
     rect_rectangle.setPosition(*position);
     rect_rectangle.setOutlineColor(sf::Color::Red);
     rect_rectangle.setOutlineThickness(1);
     rect_rectangle.setFillColor(sf::Color::Transparent);
+    */
 
 
     x_rectangle.setPosition(sf::Vector2f(position->x + collision_x.left(), position->y + collision_x.top()));
@@ -316,7 +318,7 @@ void Player::drawCollision(Graphics &graphics)
 
     graphics.window->draw(x_rectangle);
     graphics.window->draw(y_rectangle);
-    graphics.window->draw(rect_rectangle);
+    //graphics.window->draw(rect_rectangle);
 }
 
 sf::IntRect* Player::getRect()
@@ -553,7 +555,7 @@ void Player::updateY(sf::Time time, Map &map)
     // If jump is expired, set fall velocity
     if (!jump.active())
     {
-        velocity->y = std::min(velocity->y + (g_sign * gravity_val * time.asMilliseconds()), max_fall_speed);
+        velocity->y = std::min(velocity->y + (g_sign * Game::gravity_acc * time.asMilliseconds()), max_fall_speed);
     }
 
     // Calculate delta Y
@@ -637,11 +639,11 @@ void Player::updateX2(sf::Time time, Map &map)
     {
         if (gravity == RIGHT)
         {
-            velocity->x = std::min(velocity->x + (g_sign * gravity_val * time.asMilliseconds()), max_fall_speed);
+            velocity->x = std::min(velocity->x + (g_sign * Game::gravity_acc * time.asMilliseconds()), max_fall_speed);
         }
         else
         {
-            velocity->x = std::max(velocity->x + (g_sign * gravity_val * time.asMilliseconds()), -max_fall_speed);
+            velocity->x = std::max(velocity->x + (g_sign * Game::gravity_acc * time.asMilliseconds()), -max_fall_speed);
         }
     }
 

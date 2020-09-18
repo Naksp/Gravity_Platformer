@@ -8,7 +8,7 @@
 
 namespace
 {
-    const float max_speed = 0.6f;
+    const float max_speed = 0.4f;
     const float slowdown_factor = 0.85f;
 
     struct CollisionData

@@ -18,8 +18,6 @@ Level::Level(const std::string level_path, int level_num, Player &player, Graphi
     std::cout << "--------------------------------------------" << std::endl;
     std::cout << "Loading level " << level_num << " from " << level_path << "..." << std::endl;
 
-    //h_grav_blocks = new std::vector<HorizGravBlock*>();
-    //v_grav_blocks = new std::vector<VertGravBlock*>();
     grav_objects = new std::vector<std::unique_ptr<GravityObject>>();
 
     // Open file stream
@@ -177,7 +175,7 @@ void Level::setGravityUp(Player &player)
 
     for (uint i = 0; i < grav_objects->size(); i++)
     {
-        grav_objects->at(i)->stopMoving();
+        grav_objects->at(i)->startMovingUp();
     }
 }
 void Level::setGravityDown(Player &player)
@@ -187,7 +185,7 @@ void Level::setGravityDown(Player &player)
 
     for (uint i = 0; i < grav_objects->size(); i++)
     {
-        grav_objects->at(i)->stopMoving();
+        grav_objects->at(i)->startMovingDown();
     }
 }
 
@@ -318,6 +316,8 @@ void Level::updateGravBlocks(Player &player, sf::Time time)
             }
 
         }
+
+        // Gravity is Left or Right
         else
         {
             for (uint j = 0; j < player_collision->size(); j++)
