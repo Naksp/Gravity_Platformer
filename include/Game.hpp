@@ -24,6 +24,7 @@ struct Game
 
         void loadNextLevel();
         void loadLevel(int level);
+        void restartLevel(int level);
 
         // Handle input
         void processInput(Input input);

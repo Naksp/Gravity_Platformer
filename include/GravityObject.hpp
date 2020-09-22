@@ -22,6 +22,8 @@ class GravityObject
 
         virtual void draw(Graphics &graphics) const = 0;
 
+        virtual void reset() = 0;
+
         virtual sf::IntRect* getRect() = 0;
 
         virtual void startMovingUp() = 0;
@@ -29,6 +31,7 @@ class GravityObject
         virtual void startMovingLeft() = 0;
         virtual void startMovingRight() = 0;
         virtual void stopMoving() = 0;
+
 };
 
 #endif

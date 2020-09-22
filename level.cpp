@@ -50,6 +50,7 @@ Level::Level(const std::string level_path, int level_num, Player &player, Graphi
                 line_stream >> x >> y;
 
                 player_spawn = new sf::Vector2f(x, y);
+                player.setSpawn(*player_spawn);
 
                 std::cout << "Player at " << x << ", " << y << std::endl;
             }
@@ -105,15 +106,19 @@ Level::Level(const std::string level_path, int level_num, Player &player, Graphi
                 {
                 case UP:
                     gravity = UP;
+                    initialGravity = UP;
                     break;
                 case DOWN:
                     gravity = DOWN;
+                    initialGravity = DOWN;
                     break;
                 case LEFT:
                     gravity = LEFT;
+                    initialGravity = LEFT;
                     break;
                 case RIGHT:
                     gravity = RIGHT;
+                    initialGravity = RIGHT;
                     break;
                 default:
                     break;
@@ -253,6 +258,34 @@ void Level::draw(Graphics &graphics)
     for (uint i = 0; i < player_collision->size(); i++)
     {
         graphics.drawRect(player_collision->at(i), sf::Color::Green);
+    }
+}
+
+void Level::reset(Player &player)
+{
+    player.respawn();
+
+    for (auto& curr_block : *grav_objects)
+    {
+        curr_block->reset();
+    }
+
+    switch (initialGravity)
+    {
+    case UP:
+        setGravityUp(player);
+        break;
+    case DOWN:
+        setGravityDown(player);
+        break;
+    case LEFT:
+        setGravityLeft(player);
+        break;
+    case RIGHT:
+        setGravityRight(player);
+        break;
+    default:
+        break;
     }
 }
 

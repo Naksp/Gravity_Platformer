@@ -89,6 +89,11 @@ void Game::loadLevel(int level)
     player->respawn();
 }
 
+void Game::restartLevel(int level)
+{
+    levels[level]->reset(*player);
+}
+
 // Process keyboard input and move player
 void Game::processInput(Input input)
 {
@@ -179,6 +184,7 @@ void Game::draw()
     player->draw(*graphics);
     if (state == WON)
     {
+        player->stopMoving();
         graphics->winMessage(50, 50);
     }
     if (graphics->debugState())
@@ -225,9 +231,7 @@ void Game::eventLoop()
                     }
                     if (input.wasKeyPressed(sf::Keyboard::R))
                     {
-                        //player->respawn();
-                        // TODO Add object respawn
-                        loadLevel(current_level);
+                        restartLevel(current_level);
                     }
                     if (input.wasKeyPressed(sf::Keyboard::Tilde))
                     {

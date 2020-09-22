@@ -47,6 +47,7 @@ HorizGravBlock::HorizGravBlock(int x, int y)
     sprite = new sf::Sprite(texture);
 
     position = new sf::Vector2f(x, y);
+    spawnPosition = new sf::Vector2f(x, y);
     velocity = new sf::Vector2f(0.f, 0.f);
     acceleration = new sf::Vector2f(0.f, 0.f);
 
@@ -141,6 +142,17 @@ void HorizGravBlock::update(sf::Time time, Map &map)
 void HorizGravBlock::draw(Graphics &graphics) const
 {
     graphics.window->draw(*sprite);
+}
+
+void HorizGravBlock::reset()
+{
+    setPosition(*spawnPosition);
+
+    velocity->x = 0.f;
+    velocity->y = 0.f;
+
+    acceleration->x = 0.f;
+    acceleration->y = 0.f;
 }
 
 void HorizGravBlock::startMovingUp()

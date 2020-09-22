@@ -33,6 +33,14 @@ class Level
 
         void draw(Graphics &graphics);
 
+        /**
+         * Resets level
+         * Respawns player and GravObjects to initial coords
+         * 
+         * @param player Player to respawn
+         */
+        void reset(Player &player);
+
     private:
         void updateGravBlocks(Player &player, sf::Time time);
 
@@ -47,6 +55,7 @@ class Level
 
         // Current gravity direction
         Gravity gravity;
+        Gravity initialGravity;
 
         sf::Vector2f *player_spawn;
 

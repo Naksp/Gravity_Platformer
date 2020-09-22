@@ -17,6 +17,8 @@ class HorizGravBlock : public GravityObject
         void update(sf::Time time, Map &map);
         void draw(Graphics &graphics) const;
 
+        void reset();
+
         void startMovingUp();
         void startMovingDown();
         void startMovingLeft();
@@ -33,6 +35,8 @@ class HorizGravBlock : public GravityObject
         sf::Texture texture;
         sf::Sprite *sprite;
         sf::IntRect *rect;
+
+        sf::Vector2f *spawnPosition;
 
         //int g_sign;
         sf::Vector2f *position;
