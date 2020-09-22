@@ -229,6 +229,10 @@ void Level::start(Player &player)
 int Level::update(Player &player, sf::Time time)
 {
     player.update(time, *map);
+    if (!player.isAlive())
+    {
+        return -1;
+    }
     player_collision = player.getCollisionRects();
 
     // Update grav blocks

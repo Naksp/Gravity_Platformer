@@ -38,6 +38,7 @@ class Player
         void setSpawn(sf::Vector2f &spawn);
         void setSpawn(int x, int y);
         void respawn();
+        bool isAlive() { return alive; };
 
         // Set position of Player
         void setPosition(float x, float y);
@@ -118,6 +119,8 @@ class Player
     // Private variables
     private:
         sf::Vector2f *spawn_point;
+
+        bool alive;
 
         // Player state
         enum Motion {STANDING, WALKING, JUMPING, FALLING};

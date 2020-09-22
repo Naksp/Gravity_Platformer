@@ -30,13 +30,14 @@ namespace
     struct CollisionData
     {
         bool collided;
+        bool killed;
         int row, col;
     };
 
     // Set CollisionData struct with corrent info based on delta
     CollisionData setWallCollisionData(const Map &map, const MapRect &rect)
     {
-        CollisionData data = { false, 0, 0 };
+        CollisionData data = { false, false, 0, 0 };
         
         // Get colliding tiles
         std::vector<Map::CollisionTile> tiles(map.getCollidingTiles(rect));
@@ -47,7 +48,12 @@ namespace
             if (tiles[i].tile_type == Map::WALL_TILE)
             {
                 // Set collision data
-                data = { true, tiles[i].row, tiles[i].col };
+                data = { true, false, tiles[i].row, tiles[i].col };
+                break;
+            }
+            else if (tiles[i].tile_type == Map::SPIKE_TILE)
+            {
+                data = {false , true, 0, 0 };
                 break;
             }
         }
@@ -79,6 +85,7 @@ Player::Player(float x, float y, Graphics &graphics) :
     // Set initial spawn point
     spawn_point = new sf::Vector2f(x, y);
     setSpawn(*spawn_point);
+    alive = true;
 }
 
 // Destructor
@@ -258,6 +265,7 @@ void Player::respawn()
     velocity->y = 0;
     acceleration->x = 0;
     setPosition(*spawn_point);
+    alive = true;
 }
 
 // Set player position
@@ -502,6 +510,10 @@ void Player::updateX(sf::Time time, Map &map)
         // Check collision on right
         CollisionData data = setWallCollisionData(map, rightCollision(delta));
 
+        if (data.killed)
+        {
+            alive = false;
+        }
         // Collision
         if (data.collided)
         {
@@ -516,6 +528,10 @@ void Player::updateX(sf::Time time, Map &map)
 
         // Check on left
         data = setWallCollisionData(map, leftCollision(0));
+        if (data.killed)
+        {
+            alive = false;
+        }
         if (data.collided)
         {
             position->x = data.col * Game::tile_size + collision_x.width() + collision_x.left();    
@@ -527,6 +543,10 @@ void Player::updateX(sf::Time time, Map &map)
         // Check collision on left
         CollisionData data = setWallCollisionData(map, leftCollision(delta));
 
+        if (data.killed)
+        {
+            alive = false;
+        }
         // Collision
         if (data.collided)
         {
@@ -575,6 +595,10 @@ void Player::updateY(sf::Time time, Map &map)
         // Check collision on bottom
         CollisionData data = setWallCollisionData(map, bottomCollision(delta));
 
+        if (data.killed)
+        {
+            alive = false;
+        }
         // Collision
         if (data.collided)
         {
@@ -597,6 +621,10 @@ void Player::updateY(sf::Time time, Map &map)
 
         // Check in up direction
         data = setWallCollisionData(map, topCollision(0));
+        if (data.killed)
+        {
+            alive = false;
+        }
         if (data.collided)
         {
             position->y = data.row * Game::tile_size + collision_y.height();
@@ -607,6 +635,10 @@ void Player::updateY(sf::Time time, Map &map)
     {
         CollisionData data = setWallCollisionData(map, topCollision(delta));
 
+        if (data.killed)
+        {
+            alive = false;
+        }
         if (data.collided)
         {
             //jump.endJump();
@@ -631,6 +663,10 @@ void Player::updateY(sf::Time time, Map &map)
         }
 
         data = setWallCollisionData(map, bottomCollision(0));
+        if (data.killed)
+        {
+            alive = false;
+        }
         if (data.collided)
         {
             position->y = data.row * Game::tile_size - collision_y.bottom();
@@ -662,6 +698,10 @@ void Player::updateX2(sf::Time time, Map &map)
     {
         CollisionData data = setWallCollisionData(map, rightCollision(delta));
 
+        if (data.killed)
+        {
+            alive = false;
+        }
         if (data.collided)
         {
             position->x = data.col * Game::tile_size - collision_x.width();
@@ -682,6 +722,10 @@ void Player::updateX2(sf::Time time, Map &map)
 
         // Check on left
         data = setWallCollisionData(map, leftCollision(0));
+        if (data.killed)
+        {
+            alive = false;
+        }
         if (data.collided)
         {
             position->x = data.col * Game::tile_size + collision_x.width() + collision_x.left();
@@ -692,6 +736,10 @@ void Player::updateX2(sf::Time time, Map &map)
     {
         CollisionData data = setWallCollisionData(map, leftCollision(delta));
 
+        if (data.killed)
+        {
+            alive = false;
+        }
         if (data.collided)
         {
             position->x = data.col * Game::tile_size + collision_x.width();
@@ -713,6 +761,10 @@ void Player::updateX2(sf::Time time, Map &map)
         // Check on right
 
         data = setWallCollisionData(map, rightCollision(0));
+        if (data.killed)
+        {
+            alive = false;
+        }
         if (data.collided)
         {
             position->x = data.col * Game::tile_size - collision_x.right();
@@ -737,7 +789,7 @@ void Player::updateY2(sf::Time time, Map &map)
     else if (acceleration->x > 0.0f)
     {
         //velocity->y = std::min(velocity->y, maxSpeedX);
-        if (velocity->y < -maxSpeedX)
+        if (velocity->y > maxSpeedX)
         {
             velocity->y *= slowDownFactor;
         }
@@ -756,6 +808,10 @@ void Player::updateY2(sf::Time time, Map &map)
         // Check collision on bottom
         CollisionData data = setWallCollisionData(map, bottomCollision(delta));
 
+        if (data.killed)
+        {
+            alive = false;
+        }
         if (data.collided)
         {
             position->y = data.row * Game::tile_size - collision_y.bottom();
@@ -768,6 +824,10 @@ void Player::updateY2(sf::Time time, Map &map)
 
         // Check top
         data = setWallCollisionData(map, leftCollision(0));
+        if (data.killed)
+        {
+            alive = false;
+        }
         if (data.collided)
         {
             position->y = data.row * Game::tile_size + collision_y.height();
@@ -779,6 +839,10 @@ void Player::updateY2(sf::Time time, Map &map)
     {
         // Check top
         CollisionData data = setWallCollisionData(map, topCollision(delta));
+        if (data.killed)
+        {
+            alive = false;
+        }
         if (data.collided)
         {
             position->y = data.row * Game::tile_size + collision_y.height();
@@ -791,6 +855,10 @@ void Player::updateY2(sf::Time time, Map &map)
         
         // Check bottom
         data = setWallCollisionData(map, bottomCollision(0));
+        if (data.killed)
+        {
+            alive = false;
+        }
         if (data.collided)
         {
             position->y = data.row * Game::tile_size - collision_y.bottom();

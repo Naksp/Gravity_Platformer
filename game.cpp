@@ -170,9 +170,14 @@ void Game::processInput(Input input)
 // Update game state
 void Game::update(sf::Time frameTime)
 {
-    if (levels[current_level]->update(*player, frameTime))
+    int level_state = levels[current_level]->update(*player, frameTime);
+    if (level_state == 1)
     {
         state = WON;
+    }
+    else if (level_state == -1)
+    {
+        levels[current_level]->reset(*player);
     }
 }
 
