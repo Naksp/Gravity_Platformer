@@ -49,7 +49,7 @@ VertGravBlock::VertGravBlock(int x, int y)
     velocity = new sf::Vector2f(0.f, 0.f);
     acceleration = new sf::Vector2f(0.f, 0.f);
 
-    rect = new sf::IntRect(x, y, 16, 15);
+    rect = new sf::IntRect(x, y, 16, 16);
     setPosition(x, y);
 }
 
@@ -164,13 +164,12 @@ void VertGravBlock::stopMoving()
     acceleration->y = 0.0f;
 }
 
-
 sf::IntRect VertGravBlock::topCollision(int delta) const
 {
     assert(delta <= 0);
     return sf::IntRect(rect->left,
                        rect->top + delta,
-                       rect->width,
+                       rect->width - 1, // Might be an issue down the road
                        rect->height / 2);
 }
 
@@ -179,6 +178,6 @@ sf::IntRect VertGravBlock::bottomCollision(int delta) const
     assert(delta >= 0);
     return sf::IntRect(rect->left,
                        rect->top + rect->height / 2,
-                       rect->width,
+                       rect->width - 1,
                        rect->height / 2 + delta);
 }

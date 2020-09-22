@@ -1,5 +1,5 @@
 [MAP]
-./maps/map_2
+./levels/maps/map_2
 
 [PLAYER]
 16 208
@@ -9,6 +9,7 @@
 
 [HGBLOCKS]
 10 11
+12 13
 
 [GRAVITY]
 1

@@ -40,12 +40,12 @@ Level::Level(const std::string level_path, int level_num, Player &player, Graphi
 
                 map_load = true;
             }
+            // Player spawn data
             else if (line.compare("[PLAYER]") == 0)
             {
                 int x, y;
                 std::getline(level_file, line);
 
-                // Get coordinates for orb
                 std::stringstream line_stream(line);
                 line_stream >> x >> y;
 
@@ -69,25 +69,29 @@ Level::Level(const std::string level_path, int level_num, Player &player, Graphi
 
                 orb_load = true;
             }
+            // Horizontal Gravity Blocks
             else if (line.compare("[HGBLOCKS]") == 0)
             {
                 int x, y;
-                std::getline(level_file, line);
+                while (std::getline(level_file, line) && line.compare("") != 0)
+                {
+                    std::stringstream line_stream(line);
+                    line_stream >> x >> y;
 
-                std::stringstream line_stream(line);
-                line_stream >> x >> y;
-
-                grav_objects->push_back(std::make_unique<HorizGravBlock>(x * Game::tile_size, y * Game::tile_size));
+                    grav_objects->push_back(std::make_unique<HorizGravBlock>(x * Game::tile_size, y * Game::tile_size));
+                }
             }
+            // Vertical Gravity Blocks
             else if (line.compare("[VGBLOCKS]") == 0)
             {
                 int x, y;
-                std::getline(level_file, line);
+                while (std::getline(level_file, line) && line.compare("") != 0)
+                {
+                    std::stringstream line_stream(line);
+                    line_stream >> x >> y;
 
-                std::stringstream line_stream(line);
-                line_stream >> x >> y;
-
-                grav_objects->push_back(std::make_unique<VertGravBlock>(x * Game::tile_size, y * Game::tile_size));
+                    grav_objects->push_back(std::make_unique<VertGravBlock>(x * Game::tile_size, y * Game::tile_size));
+                }
             }
             // Set initial gravity
             else if (line.compare("[GRAVITY]") == 0)

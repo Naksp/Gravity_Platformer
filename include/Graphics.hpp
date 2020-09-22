@@ -21,7 +21,7 @@ class Graphics
         void display();
 
         void winMessage(int x, int y);
-        //void debugInfo(Player &player, Level &level);
+
         void debugInfo(sf::Vector2f &pos, sf::Vector2f &vel, int grav);
 
         void drawRect(sf::IntRect &rect, sf::Color color) const;

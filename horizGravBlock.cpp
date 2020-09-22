@@ -51,7 +51,7 @@ HorizGravBlock::HorizGravBlock(int x, int y)
     acceleration = new sf::Vector2f(0.f, 0.f);
 
     // Set collision rect and initial position
-    rect = new sf::IntRect(x, y, 16, 15);
+    rect = new sf::IntRect(x, y, 16, 16);
     setPosition(x, y);
 }
 
@@ -173,7 +173,7 @@ sf::IntRect HorizGravBlock::leftCollision(int delta) const
     return sf::IntRect(rect->left + delta,
                        rect->top,
                        rect->width / 2,
-                       rect->height);
+                       rect->height - 1); // Might be an issue down the road
 }
 
 sf::IntRect HorizGravBlock::rightCollision(int delta) const
@@ -182,5 +182,5 @@ sf::IntRect HorizGravBlock::rightCollision(int delta) const
     return sf::IntRect(rect->left + rect->width / 2,
                        rect->top,
                        rect->width / 2 + delta,
-                       rect->height);
+                       rect->height - 1);
 }

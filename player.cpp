@@ -495,7 +495,7 @@ void Player::updateX(sf::Time time, Map &map)
 
     const int delta = (int) round(velocity->x * time.asMilliseconds());
 
-    // Player is moveing right
+    // Player is moving right
     if (delta > 0)
     {
         // Check collision on right
@@ -555,7 +555,14 @@ void Player::updateY(sf::Time time, Map &map)
     // If jump is expired, set fall velocity
     if (!jump.active())
     {
-        velocity->y = std::min(velocity->y + (g_sign * Game::gravity_acc * time.asMilliseconds()), max_fall_speed);
+        if (gravity == DOWN)
+        {
+            velocity->y = std::min(velocity->y + (g_sign * Game::gravity_acc * time.asMilliseconds()), max_fall_speed);
+        }
+        else
+        {
+            velocity->y = std::max(velocity->y + (g_sign * Game::gravity_acc * time.asMilliseconds()), -max_fall_speed);
+        }
     }
 
     // Calculate delta Y
