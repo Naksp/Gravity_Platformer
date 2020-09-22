@@ -43,8 +43,9 @@ class Player
         void setPosition(float x, float y);
         void setPosition(sf::Vector2f &vec);
 
-        sf::Vector2f* getPosition() const;
-        sf::Vector2f* getVelocity() const;
+        sf::Vector2f* getPosition() const { return position; };
+        sf::Vector2f* getVelocity() const { return velocity; };
+        sf::Vector2f* getAcceleration() const { return acceleration; };
 
         /**
          * Sets rotation of sprite, adjusting offset to keep same position
@@ -76,12 +77,13 @@ class Player
 
         /**
          * For debugging spritestate
+         * @return sprite state as string
          */
         std::string debugSpriteState() const;
 
     private:
         /**
-         * Update X direction of movement vectors
+         * Update X direction for vertical gravity
          * 
          * @param time  Time of last frame
          * @param map   Map of sprites
@@ -89,7 +91,7 @@ class Player
         void updateX(sf::Time time, Map &map);
 
         /**
-         * Update Y direction of movement vectors
+         * Update Y direction for vertical gravity
          * 
          * @param time  Time of last frame
          * @param map   Map of sprites

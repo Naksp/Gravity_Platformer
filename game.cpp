@@ -185,7 +185,7 @@ void Game::draw()
     {
         // TODO make debug class to output extraneous messages
         player->drawCollision(*graphics);
-        graphics->debugInfo(*player->getPosition(), *player->getVelocity(), levels[current_level]->getGravity());
+        graphics->debugInfo(*player->getPosition(), *player->getVelocity(), *player->getAcceleration(), levels[current_level]->getGravity());
     }
     graphics->display();
 }

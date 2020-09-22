@@ -161,6 +161,7 @@ void Player::setGravityLeft()
     setRotation(90.f);
     gravity = LEFT;
     g_sign = -1;
+    on_ground = false;
 }
 
 void Player::setGravityRight()
@@ -168,6 +169,7 @@ void Player::setGravityRight()
     setRotation(270.f);
     gravity = RIGHT;
     g_sign = 1;
+    on_ground = false;
 }
 
 void Player::setGravityUp()
@@ -175,6 +177,7 @@ void Player::setGravityUp()
     setRotation(180.f);
     gravity = UP;
     g_sign = -1;
+    on_ground = false;
 }
 
 void Player::setGravityDown()
@@ -182,6 +185,7 @@ void Player::setGravityDown()
     setRotation(0.f);
     gravity = DOWN;
     g_sign = 1;
+    on_ground = false;
 }
 
 
@@ -272,16 +276,6 @@ void Player::setPosition(sf::Vector2f &vec)
     position->x = vec.x;
     position->y = vec.y;
     sprites[getSpriteState()]->setPosition(*position);
-}
-
-sf::Vector2f* Player::getPosition() const
-{
-    return position;
-}
-
-sf::Vector2f* Player::getVelocity() const
-{
-    return velocity;
 }
 
 void Player::setRotation(float angle)
@@ -481,11 +475,19 @@ void Player::updateX(sf::Time time, Map &map)
     // Set x velocity cap
     if (acceleration->x < 0.0f)
     {
-        velocity->x = std::max(velocity->x, -maxSpeedX);
+        //velocity->x = std::max(velocity->x, -maxSpeedX);
+        if (velocity->x < -maxSpeedX)
+        {
+            velocity->x *= slowDownFactor;
+        }
     }
     else if (acceleration->x > 0.0f)
     {
-        velocity->x = std::min(velocity->x, maxSpeedX);
+        //velocity->x = std::min(velocity->x, maxSpeedX);
+        if (velocity->x > maxSpeedX)
+        {
+            velocity->x *= slowDownFactor;
+        }
     }
     else
     {
@@ -727,11 +729,19 @@ void Player::updateY2(sf::Time time, Map &map)
 
     if (acceleration->x < 0.0f)
     {
-        velocity->y = std::max(velocity->y, -maxSpeedX);
+        //velocity->y = std::max(velocity->y, -maxSpeedX);
+        if (velocity->y < -maxSpeedX)
+        {
+            velocity->y *= slowDownFactor;
+        }
     }
     else if (acceleration->x > 0.0f)
     {
-        velocity->y = std::min(velocity->y, maxSpeedX);
+        //velocity->y = std::min(velocity->y, maxSpeedX);
+        if (velocity->y < -maxSpeedX)
+        {
+            velocity->y *= slowDownFactor;
+        }
     }
     else
     {
