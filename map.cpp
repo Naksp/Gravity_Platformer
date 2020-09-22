@@ -26,14 +26,15 @@ Map* Map::loadMapFile(const std::string file_path, Graphics &graphics)
         num_rows, vector<Tile>(
             num_cols, Tile()));
 
-    // TODO make this a function to load from file
-    map->textures = vector<sf::Texture>();
-    map->textures.push_back(graphics.loatTexture("./resources/metal_tile.png"));
-    shared_ptr<sf::Sprite> sprite(new sf::Sprite(map->textures[0]));
-   //map->texture = graphics.loatTexture("./resources/metal_tile.png");
-   //shared_ptr<sf::Sprite> sprite(new sf::Sprite(map->texture));
+    // TODO make this a function to load from file maybe
+    map->textures = new vector<sf::Texture>();
+    map->textures->push_back(graphics.loatTexture("./resources/metal_tile.png"));
+    map->textures->push_back(graphics.loatTexture("./resources/spikes.png"));
+    shared_ptr<sf::Sprite> wall_sprite(new sf::Sprite(map->textures->at(0)));
+    shared_ptr<sf::Sprite> spike_sprite(new sf::Sprite(map->textures->at(1)));
 
-    Tile tile(WALL_TILE, sprite);
+    Tile wall_tile(WALL_TILE, wall_sprite);
+    Tile spike_tile(SPIKE_TILE, spike_sprite);
 
     // Stream vars
     std::ifstream map_file;
@@ -57,7 +58,11 @@ Map* Map::loadMapFile(const std::string file_path, Graphics &graphics)
             {
                 if (val == 1)
                 {
-                    map->tiles[row][col] = tile;
+                    map->tiles[row][col] = wall_tile;
+                }
+                else if (val == 2)
+                {
+                    map->tiles[row][col] = spike_tile;
                 }
                 col++;
             }

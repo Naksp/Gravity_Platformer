@@ -15,7 +15,6 @@ namespace
     const float maxSpeedX = 0.175f; // pixels / ms (original 0.325f)
 
     // Gravity constants
-    //const float gravity_val = 0.002f;
     const float max_fall_speed = 0.4f;
 
     // Jump constants

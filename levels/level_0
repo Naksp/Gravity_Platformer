@@ -2,10 +2,10 @@
 ./levels/maps/map_0
 
 [PLAYER]
-16 208
+2 13
 
 [ORB]
-288 128
+18 8
 
 [GRAVITY]
 1

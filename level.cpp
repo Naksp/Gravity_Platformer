@@ -49,10 +49,10 @@ Level::Level(const std::string level_path, int level_num, Player &player, Graphi
                 std::stringstream line_stream(line);
                 line_stream >> x >> y;
 
-                player_spawn = new sf::Vector2f(x, y);
+                player_spawn = new sf::Vector2f(x * Game::tile_size, y * Game::tile_size);
                 player.setSpawn(*player_spawn);
 
-                std::cout << "Player at " << x << ", " << y << std::endl;
+                std::cout << "Player at " << x * Game::tile_size << ", " << y * Game::tile_size << std::endl;
             }
             // Read orb data
             else if (line.compare("[ORB]") == 0)
@@ -65,8 +65,8 @@ Level::Level(const std::string level_path, int level_num, Player &player, Graphi
                 line_stream >> x >> y;
 
                 // Create new orb
-                orb = new Orb(x, y, graphics);
-                std::cout << "Orb at " << x << ", " << y << std::endl;
+                orb = new Orb(x * Game::tile_size, y * Game::tile_size, graphics);
+                std::cout << "Orb at " << x * Game::tile_size << ", " << y * Game::tile_size << std::endl;
 
                 orb_load = true;
             }
@@ -234,6 +234,8 @@ int Level::update(Player &player, sf::Time time)
     // Update grav blocks
     // This checks player and map collision
     updateGravBlocks(player, time);
+
+    orb->update(time);
 
     // Check if level is won
     if (player.getRect()->intersects(*orb->getRect()))

@@ -13,7 +13,8 @@ class Map
         enum TileType
         {
             AIR_TILE,
-            WALL_TILE
+            WALL_TILE,
+            SPIKE_TILE
         };
         struct CollisionTile {
             CollisionTile(int row, int col, TileType tile_type) :
@@ -49,7 +50,7 @@ class Map
     private:
         struct Tile
         {
-            Tile(TileType tile_type=AIR_TILE, boost::shared_ptr<sf::Sprite> sprite=boost::shared_ptr<sf::Sprite>()) :
+            Tile(TileType tile_type = AIR_TILE, boost::shared_ptr<sf::Sprite> sprite = boost::shared_ptr<sf::Sprite>()) :
             tile_type(tile_type),
             sprite(sprite) {};
 
@@ -59,7 +60,7 @@ class Map
         };
         std::vector<std::vector<Tile> > tiles;
         sf::Texture texture;
-        std::vector<sf::Texture> textures;
+        std::vector<sf::Texture> *textures;
 
 };
 

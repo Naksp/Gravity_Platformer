@@ -12,6 +12,7 @@ class Orb
         Orb(int x, int y, Graphics &graphics);
         ~Orb();
 
+        void update(sf::Time time);
         void draw(Graphics &graphics);
         sf::IntRect* getRect();
 

@@ -2,10 +2,10 @@
 ./levels/maps/map_3
 
 [PLAYER]
-16 208
+1 12
 
 [ORB]
-208 208
+13 13
 
 [VGBLOCKS]
 2 11

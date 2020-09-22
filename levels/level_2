@@ -2,10 +2,10 @@
 ./levels/maps/map_2
 
 [PLAYER]
-16 208
+2 13
 
 [ORB]
-16 16
+1 1
 
 [HGBLOCKS]
 10 11
