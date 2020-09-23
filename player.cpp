@@ -53,8 +53,8 @@ namespace
             }
             else if (tiles[i].tile_type == Map::SPIKE_TILE)
             {
+                // Don't break, let wall tile stop player before spikes
                 data = {false , true, 0, 0 };
-                break;
             }
         }
         return data;

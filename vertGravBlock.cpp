@@ -27,7 +27,7 @@ namespace
         for (size_t i = 0; i < tiles.size(); i++)
         {
             // Check for wall tiles
-            if (tiles[i].tile_type == Map::WALL_TILE)
+            if (tiles[i].tile_type == Map::WALL_TILE || tiles[i].tile_type == Map::SPIKE_TILE)
             {
                 // Set collision data
                 data = { true, tiles[i].row, tiles[i].col };
