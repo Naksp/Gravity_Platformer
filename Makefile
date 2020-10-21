@@ -6,8 +6,8 @@ SFML_FLAGS := -lsfml-graphics -lsfml-window -lsfml-system
 SRCS := $(wildcard *.cpp)
 OBJS := $(patsubst %.cpp, $(BUILD_DIR)/%.o, $(SRCS))
 
-simple_platformer: $(OBJS)
-	g++ -o $(BUILD_DIR)/simple_platformer $(OBJS) $(SFML_FLAGS) 
+gravity_platformer: $(OBJS)
+	g++ -o $(BUILD_DIR)/gravity_platformer $(OBJS) $(SFML_FLAGS) 
 	@echo "Make Finished Successfully"
 
 $(BUILD_DIR)/%.o: %.cpp
@@ -16,5 +16,5 @@ $(BUILD_DIR)/%.o: %.cpp
 clean:
 	rm -f $(BUILD_DIR)/*
 
-run: simple_platformer
-	$(BUILD_DIR)/simple_platformer
+run: gravity_platformer
+	$(BUILD_DIR)/gravity_platformer

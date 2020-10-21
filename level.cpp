@@ -313,22 +313,28 @@ void Level::updateGravBlocks(Player &player, sf::Time time)
                     {
                     // Left Collision
                     case 0 :
-                        player.collideX();
-                        if (gravity == LEFT)
+                        if (player.getVelocity()->x < 0)
                         {
-                            player.landOnGround();
+                            player.collideX();
                         }
                         player.setPosition(curr_block->getRect()->left + curr_block->getRect()->width, player.getPosition()->y);
+                        if (curr_block->getVelocity()->x > 0)
+                        {
+                            player.pushX();
+                        }
                         player_collision = player.getCollisionRects();
                         break;
                     // Right Collision
                     case 1 :
-                        player.collideX();
-                        if (gravity == RIGHT)
+                        if (player.getVelocity()->x > 0)
                         {
-                            player.landOnGround();
+                            player.collideX();
                         }
                         player.setPosition(curr_block->getRect()->left - Game::tile_size, player.getPosition()->y);
+                        if (curr_block->getVelocity()->x < 0)
+                        {
+                            player.pushX();
+                        }
                         player_collision = player.getCollisionRects();
                         break;
                     // Bottom collision
@@ -339,6 +345,10 @@ void Level::updateGravBlocks(Player &player, sf::Time time)
                             player.landOnGround();
                         }
                         player.setPosition(player.getPosition()->x, curr_block->getRect()->top - Game::tile_size);
+                        if (curr_block->getVelocity()->y > 0)
+                        {
+                            player.pushY();
+                        }
                         player_collision = player.getCollisionRects();
                         break;
                     // Top collision
@@ -349,6 +359,10 @@ void Level::updateGravBlocks(Player &player, sf::Time time)
                             player.landOnGround();
                         }
                         player.setPosition(player.getPosition()->x, curr_block->getRect()->top + Game::tile_size);
+                        if (curr_block->getVelocity()->y < 0)
+                        {
+                            player.pushY();
+                        }
                         player_collision = player.getCollisionRects();
                         break;
                     
@@ -378,6 +392,10 @@ void Level::updateGravBlocks(Player &player, sf::Time time)
                             player.landOnGround();
                         }
                         player.setPosition(curr_block->getRect()->left + curr_block->getRect()->width, player.getPosition()->y);
+                        if (curr_block->getVelocity()->x > 0)
+                        {
+                            player.pushX();
+                        }
                         player_collision = player.getCollisionRects();
                         break;
                     // Right Collision
@@ -388,25 +406,29 @@ void Level::updateGravBlocks(Player &player, sf::Time time)
                             player.landOnGround();
                         }
                         player.setPosition(curr_block->getRect()->left - Game::tile_size, player.getPosition()->y);
+                        if (curr_block->getVelocity()->x < 0)
+                        {
+                            player.pushX();
+                        }
                         player_collision = player.getCollisionRects();
                         break;
                     // Bottom collision
                     case 2 :
                         player.collideY();
-                        if (gravity == DOWN)
-                        {
-                            player.landOnGround();
-                        }
                         player.setPosition(player.getPosition()->x, curr_block->getRect()->top - Game::tile_size);
+                        if (curr_block->getVelocity()->y > 0)
+                        {
+                            player.pushY();
+                        }
                         player_collision = player.getCollisionRects();
                         break;
                     case 3 :
                         player.collideY();
-                        if (gravity == UP)
-                        {
-                            player.landOnGround();
-                        }
                         player.setPosition(player.getPosition()->x, curr_block->getRect()->top + Game::tile_size);
+                        if (curr_block->getVelocity()->y < 0)
+                        {
+                            player.pushY();
+                        }
                         player_collision = player.getCollisionRects();
                         break;
                     

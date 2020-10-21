@@ -77,6 +77,9 @@ Player::Player(float x, float y, Graphics &graphics) :
     velocity = new sf::Vector2f(0.0f, 0.0f);
     acceleration = new sf::Vector2f(0.0f, 0.0f);
 
+    beingPushedX = false;
+    beingPushedY = false;
+
     rect = new sf::IntRect(x, y, 16, 16);
 
     // Set initial sprite position
@@ -118,6 +121,9 @@ void Player::update(sf::Time time, Map &map)
 
     sprites[getSpriteState()]->update(time.asMilliseconds());
     sprites[getSpriteState()]->setPosition(*position);
+
+    beingPushedX = false;
+    beingPushedY = false;
 }
 
 void Player::startMovingRight()
@@ -369,6 +375,16 @@ void Player::collideY()
     velocity->y = 0;
 }
 
+void Player::pushX()
+{
+    beingPushedX = true;
+}
+
+void Player::pushY()
+{
+    beingPushedY = true;
+}
+
 void Player::landOnGround()
 {
     on_ground = true;
@@ -517,6 +533,7 @@ void Player::updateX(sf::Time time, Map &map)
         // Collision
         if (data.collided)
         {
+            checkCrushX();
             position->x = data.col * Game::tile_size - collision_x.width();
             velocity->x = 0;
         }
@@ -534,6 +551,7 @@ void Player::updateX(sf::Time time, Map &map)
         }
         if (data.collided)
         {
+            checkCrushX();
             position->x = data.col * Game::tile_size + collision_x.width() + collision_x.left();    
         }
     }
@@ -548,8 +566,9 @@ void Player::updateX(sf::Time time, Map &map)
             alive = false;
         }
         // Collision
-        if (data.collided)
+        if (data.collided) 
         {
+            checkCrushX();
             position->x = data.col * Game::tile_size + collision_x.width();
             velocity->x = 0;
         }
@@ -563,6 +582,7 @@ void Player::updateX(sf::Time time, Map &map)
         data = setWallCollisionData(map, rightCollision(0));
         if (data.collided)
         {
+            checkCrushX();
             position->x = data.col * Game::tile_size - collision_x.right();
         }
     }
@@ -602,6 +622,7 @@ void Player::updateY(sf::Time time, Map &map)
         // Collision
         if (data.collided)
         {
+            checkCrushY();
             position->y = data.row * Game::tile_size - collision_y.bottom();
             velocity->y = 0;
             if (gravity == DOWN)
@@ -627,6 +648,7 @@ void Player::updateY(sf::Time time, Map &map)
         }
         if (data.collided)
         {
+            checkCrushY();
             position->y = data.row * Game::tile_size + collision_y.height();
         }
     }
@@ -642,6 +664,7 @@ void Player::updateY(sf::Time time, Map &map)
         if (data.collided)
         {
             //jump.endJump();
+            checkCrushY();
             position->y = data.row * Game::tile_size + collision_y.height();
             velocity->y = 0;
             if (gravity == UP)
@@ -669,6 +692,7 @@ void Player::updateY(sf::Time time, Map &map)
         }
         if (data.collided)
         {
+            checkCrushY();
             position->y = data.row * Game::tile_size - collision_y.bottom();
         }
         
@@ -702,7 +726,7 @@ void Player::updateX2(sf::Time time, Map &map)
         {
             alive = false;
         }
-        if (data.collided)
+        if (data.collided && !checkCrushX())
         {
             position->x = data.col * Game::tile_size - collision_x.width();
             velocity->x = 0;
@@ -726,7 +750,7 @@ void Player::updateX2(sf::Time time, Map &map)
         {
             alive = false;
         }
-        if (data.collided)
+        if (data.collided && !checkCrushX())
         {
             position->x = data.col * Game::tile_size + collision_x.width() + collision_x.left();
         }
@@ -740,7 +764,7 @@ void Player::updateX2(sf::Time time, Map &map)
         {
             alive = false;
         }
-        if (data.collided)
+        if (data.collided && !checkCrushX())
         {
             position->x = data.col * Game::tile_size + collision_x.width();
             velocity->x = 0;
@@ -765,8 +789,9 @@ void Player::updateX2(sf::Time time, Map &map)
         {
             alive = false;
         }
-        if (data.collided)
+        if (data.collided && !checkCrushX())
         {
+            checkCrushX();
             position->x = data.col * Game::tile_size - collision_x.right();
         }
     }
@@ -814,6 +839,7 @@ void Player::updateY2(sf::Time time, Map &map)
         }
         if (data.collided)
         {
+            checkCrushY();
             position->y = data.row * Game::tile_size - collision_y.bottom();
             velocity->y = 0;
         }
@@ -830,6 +856,7 @@ void Player::updateY2(sf::Time time, Map &map)
         }
         if (data.collided)
         {
+            checkCrushY();
             position->y = data.row * Game::tile_size + collision_y.height();
         }
         
@@ -845,6 +872,7 @@ void Player::updateY2(sf::Time time, Map &map)
         }
         if (data.collided)
         {
+            checkCrushY();
             position->y = data.row * Game::tile_size + collision_y.height();
             velocity->y = 0;
         }
@@ -861,11 +889,32 @@ void Player::updateY2(sf::Time time, Map &map)
         }
         if (data.collided)
         {
+            checkCrushY();
             position->y = data.row * Game::tile_size - collision_y.bottom();
         }
     }
 
     frame_delta_y = delta;
+}
+
+bool Player::checkCrushX()
+{
+    if (beingPushedX)
+    {
+        alive = false;
+        return true;
+    }
+    return false;
+}
+
+bool Player::checkCrushY()
+{
+    if (beingPushedY)
+    {
+        alive = false;
+        return true;
+    }
+    return false;
 }
 
 bool operator<(const Player::SpriteState &a, const Player::SpriteState &b)

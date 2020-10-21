@@ -25,6 +25,8 @@ class GravityObject
         virtual void reset() = 0;
 
         virtual sf::IntRect* getRect() = 0;
+        
+        virtual sf::Vector2f* getVelocity() = 0;
 
         virtual void startMovingUp() = 0;
         virtual void startMovingDown() = 0;

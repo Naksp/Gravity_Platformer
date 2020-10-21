@@ -27,6 +27,8 @@ class VertGravBlock : public GravityObject
 
         sf::IntRect* getRect() { return rect; };
 
+        sf::Vector2f* getVelocity() { return velocity; };
+
     private:
         sf::IntRect topCollision(int delta) const;
         sf::IntRect bottomCollision(int delta) const;

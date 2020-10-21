@@ -70,6 +70,9 @@ class Player
         void collideX();
         void collideY();
 
+        void pushX();
+        void pushY();
+
         /**
          * Set player on_ground to true
          * Used to correctly set player movement state
@@ -114,6 +117,9 @@ class Player
          * @param map   Map of sprites
          */
         void updateY2(sf::Time time, Map &map);
+
+        bool checkCrushX();
+        bool checkCrushY();
 
 
     // Private variables
@@ -195,6 +201,9 @@ class Player
         sf::Vector2f *velocity;
         sf::Vector2f *acceleration;
         bool on_ground;
+
+        bool beingPushedX;
+        bool beingPushedY;
 
         int frame_delta_x, frame_delta_y;
 

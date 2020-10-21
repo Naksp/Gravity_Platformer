@@ -27,6 +27,8 @@ class HorizGravBlock : public GravityObject
 
         sf::IntRect* getRect() { return rect; };
 
+        sf::Vector2f* getVelocity() { return velocity; };
+
     private:
         sf::IntRect leftCollision(int delta) const;
         sf::IntRect rightCollision(int delta) const;

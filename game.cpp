@@ -170,6 +170,7 @@ void Game::processInput(Input input)
 // Update game state
 void Game::update(sf::Time frameTime)
 {
+    //frameTime = sf::milliseconds(16);
     int level_state = levels[current_level]->update(*player, frameTime);
     if (level_state == 1)
     {
