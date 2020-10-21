@@ -1,4 +1,4 @@
-# Gravity <img src="./img/robo_ball_logo.png">
+# Gravity Platformer <img src="./img/robo_ball_logo.png">
 A platforming game made with C++ using [SFML](https://www.sfml-dev.org/).
 
 ## Features Implemented in Gravity_Platformer
